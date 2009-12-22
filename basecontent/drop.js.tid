@@ -4,9 +4,8 @@ modified: 20091220134532
 type: text/javascript
 tags: 
 
-//var server_prefix = 'fdsafdsasasafdsafdsafdsajkfl;adfjask';
-var server_prefix = '';
 $(function() {
+
         var drop_on_recipe = function(event, ui) {
             var source = ui.draggable
             var target = $(this)
@@ -22,6 +21,7 @@ $(function() {
             var message2 = 'target recipe of ' + recipe_name;
             alert("If feature were implemented (coming soon!) your action would add " + message1 + ' to ' + message2);
         };
+
         var drop_on_bag = function(event, ui) {
             var source = ui.draggable
             var target = $(this)
@@ -37,12 +37,15 @@ $(function() {
             var message2 = 'target bag of ' + bag_name;
             alert("If feature were implemented (coming soon!) your action would add " + message1 + ' to ' + message2);
         };
+
         $(".draggable").draggable({helper: 'clone', opacity: 0.7});
+
         $(".droppable.recipe").droppable({
             accept: '.bag',
             hoverClass: 'hover',
             drop: drop_on_recipe,
             });
+
         $(".droppable.bag").droppable({
             accept: '.user',
             hoverClass: 'hover',
@@ -61,6 +64,55 @@ $(function() {
                     },
                     error: function(xhr, status, error) {
                         alert('delete of ' + entity_uri + ' failed ' + status);
+                    },
+                });
+            };
+        });
+
+        $(".following .draggable").before('<img style="cursor: pointer;" height="16" alt="delete me" src="' + server_prefix + '/bags/hoster/tiddlers/delete.gif" />').prev().
+        click( function() {
+            var entity = $(this).next();
+            var entity_uri = entity.attr('href').replace('/tiddlers', '');
+            var tiddler_name = 'friends';
+            if (entity.hasClass('bag')) {
+                tiddler_name = 'favorites';
+            }
+            var entity_path = entity_uri.split('/');
+            var entity_name = entity_path[entity_path.length-1];
+            var tiddler_uri = server_prefix + '/bags/' + current_username + '/tiddlers/' + tiddler_name;
+            if (confirm("Are you sure you wish to delete " + entity_name + " from " + tiddler_name)) {
+                $.ajax({
+                    dataType: 'json',
+                    type: "GET",
+                    url: tiddler_uri,
+                    success: function(data, msg) {
+                        names = data.text.split('\n');
+                        alert(names);
+                        var new_names = '';
+                        for (var i=0, len=names.length; i<len; ++i) {
+                            if (names[i] != entity_name) {
+                                new_names += names[i] + "\n";
+                            }
+                        }
+                        data.text = new_names;
+                        json_string = JSON.stringify(data);
+                        alert(json_string);
+                        $.ajax({
+                            contentType: 'application/json',
+                            processData: false,
+                            data: json_string,
+                            type: "PUT",
+                            url: tiddler_uri,
+                            success: function(data, msg) {
+                                entity.parent().remove();
+                            },
+                            error: function(xhr, status, error) {
+                                alert('update of ' + tiddler_name + ' failed: ' + status);
+                            }
+                        })
+                    },
+                    error: function(xhr, status, error) {
+                        alert('read of ' + entity_name + ' failed ' + status);
                     },
                 });
             };
