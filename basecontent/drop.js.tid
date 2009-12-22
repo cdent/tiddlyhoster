@@ -19,7 +19,7 @@ $(function() {
             var recipe_name = target_path[2];
             var message1 = 'source bag of ' + bag_name;
             var message2 = 'target recipe of ' + recipe_name;
-            alert(message1 + ' : ' + message2);
+            alert("If feature were implemented (coming soon!) your action would add " + message1 + ' to ' + message2);
         };
         var drop_on_bag = function(event, ui) {
             var source = ui.draggable
@@ -34,7 +34,7 @@ $(function() {
             var bag_name = target_path[2];
             var message1 = 'source user of ' + user_name;
             var message2 = 'target bag of ' + bag_name;
-            alert(message1 + ' : ' + message2);
+            alert("If feature were implemented (coming soon!) your action would add " + message1 + ' to ' + message2);
         };
         $(".draggable").draggable({helper: 'clone', opacity: 0.7});
         $(".droppable.recipe").droppable({

@@ -7,13 +7,15 @@ intended to be a complete system with an excellent UI. Instead
 it explores the structure of the application to see where there
 are gaps, patterns, opportunities.
 
+You can help by trying it out.
+
 You can make a new hoster instance, once the package has been
 installed, with the 'betsy' command:
 
  $ betsy place
  $ cd place
  $ twanager server
- $ ope http://0.0.0.0:8080/
+ $ open http://0.0.0.0:8080/
 
 Copyright 2009, Chris Dent <cdent@peermore.com>
 
