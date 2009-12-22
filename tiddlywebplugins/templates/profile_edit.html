@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block body %}
+<div id="profile">
+    <p>Type in some profile information in the text area. Tells us a
+    bit about yourself. You can use TiddlyWiki syntax to mark things
+    up as you like.</p>
+    <p>You may wish to suggest some good resources.</p>
+</div>
+<form method="POST">
+<textarea name="text" rows="24" cols="80">
+{{ tiddler.text }}
+</textarea>
+<input type="hidden" name="title" value="{{ tiddler.title }}">
+<input type="hidden" name="bag" value="{{ tiddler.bag }}">
+<input type="hidden" name="return_url" value="{{ return_url }}">
+<input type="submit">
+<a href="{{ return_url }}">Cancel</a>
+</form>
+{% endblock %}

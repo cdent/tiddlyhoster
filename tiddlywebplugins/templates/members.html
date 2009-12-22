@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block body %}
+<div id="friends">
+<ul>
+{% for member, md5 in members %}
+<li><a href="{{ server_prefix }}/{{ member }}" title="{{ member }}">
+    <img height="24" src="http://www.gravatar.com/avatar/{{ md5 }}.png"
+    alt="{{ member }}" />{{ member }}</a></li>
+{% endfor %}
+</ul>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+#!/usr/bin/env python
+
+"""
+hoster instantiation
+"""
+
+import sys
+import os
+# extend module search path for access to tiddlywebconfig.py
+cwd = os.getcwd()
+sys.path.insert(0, cwd)
+
+from tiddlyweb.config import config
+from tiddlywebplugins.instancer.util import spawn
+from tiddlywebplugins.hoster import instance
+
+
+def main(args):
+    args = [unicode(arg, "UTF-8") for arg in args]
+    instance_path = args[1]
+    config['instance_tiddlers'] = instance.instance_tiddlers
+    spawn(instance_path, config, instance)
+    return True
+
+
+if __name__ == "__main__":
+    status = not main(sys.argv)
+    sys.exit(status)

@@ -1,0 +1,21 @@
+
+Hoster is a plugin for TiddlyWeb that hosts TiddlyWikis.
+
+It aggregates a lot of functionality to explore how multi-user
+TiddlyWiki hosting might work. It is a prototype and is not 
+intended to be a complete system with an excellent UI. Instead
+it explores the structure of the application to see where there
+are gaps, patterns, opportunities.
+
+You can make a new hoster instance, once the package has been
+installed, with the 'betsy' command:
+
+ $ betsy place
+ $ cd place
+ $ twanager server
+ $ ope http://0.0.0.0:8080/
+
+Copyright 2009, Chris Dent <cdent@peermore.com>
+
+Licensed under the same terms and TiddlyWeb itself.
+http://tiddlyweb.com/

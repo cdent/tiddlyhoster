@@ -1,0 +1,18 @@
+
+{% extends "base.html" %}
+{% block body %}
+<h1>Add a New Bag</h1>
+
+<form action="{{ server_prefix }}/createbag" method="POST">
+    <p>Bag Name: <input
+    name="bag"
+    size="60"
+    value="{{ user.name }}-{{ timestamp }}">
+    <input type="checkbox" name="publicity" value="private" />Private?</p>
+    <p>Description: <input
+    name="description"
+    size="120" /></p>
+    <p><input type="submit" value="accept" /></p>
+</form>
+
+{% endblock %}

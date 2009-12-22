@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>Add a New Wiki</h1>
+
+<form action="{{ server_prefix }}/createrecipe" method="POST">
+    <p>Recipe Name: <input
+    name="recipe"
+    size="60"
+    value="{{ user.name }}-{{ timestamp }}"> <input type="checkbox"
+    name="publicity" value="private" />Private?</p>
+    <p>Description: <input
+    name="description"
+    size="120" /></p>
+    Bag Info:
+    <ul>
+        <li><code>system</code></li>
+        <li><input
+        name="bag"
+        size="60"
+        value="{{ user.name }}-{{ timestamp }}"><br /></li>
+    </ul>
+    <p><em>If the bag does not yet exist it will be created as
+        private. You can (eventually) add more bags later.</em></p>
+    <p><input type="submit" value="accept" /></p>
+</form>
+
+{% endblock %}
