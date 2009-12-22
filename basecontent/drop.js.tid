@@ -87,7 +87,6 @@ $(function() {
                     url: tiddler_uri,
                     success: function(data, msg) {
                         names = data.text.split('\n');
-                        alert(names);
                         var new_names = '';
                         for (var i=0, len=names.length; i<len; ++i) {
                             if (names[i] != entity_name) {
@@ -96,7 +95,6 @@ $(function() {
                         }
                         data.text = new_names;
                         json_string = JSON.stringify(data);
-                        alert(json_string);
                         $.ajax({
                             contentType: 'application/json',
                             processData: false,
