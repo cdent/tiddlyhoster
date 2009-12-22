@@ -15,11 +15,20 @@ border-bottom: thin solid black;
 margin-bottom: 1em;
 }
 
+.hover {
+    border: thin solid black;
+}
+
 #profile {
 float: right;
 width: 50%;
 padding-left: 1em;
 border-left: thin solid black;
+}
+
+
+.draggable:hover {
+    border: thin solid black;
 }
 
 .following {

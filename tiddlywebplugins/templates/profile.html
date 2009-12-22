@@ -1,16 +1,25 @@
-{% extends "base.html" %}
+{% extends "hosterbase.html" %}
 {% block body %}
-<div id="profile">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"
+    type="text/javascript"></script>
+            <script
+                src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"
+                type="text/javascript"></script>
+{% if home == user.name %}
+<script src="{{ server_prefix }}/bags/hoster/tiddlers/drop.js"
+    type="text/javascript"></script>
+{% endif %}
+<div id="profile" class="ui-widget-content">
     <div class="gravatar"><img
     src="http://www.gravatar.com/avatar/{{ email_md5 }}.png" alt="gravatar">
     </div>
     {{ profile }}
     {% if home == user.name %}
-    <p><form action="{{ server_prefix }}/formeditor"><input type="submit"
-        name="edit" value="edit profile"/></form></p>
-    <p><form action="{{ server_prefix }}/addemail" method="POST"><input name="email"
+    <div><form action="{{ server_prefix }}/formeditor"><input type="submit"
+            name="edit" value="edit profile"/></form></div>
+    <div><form action="{{ server_prefix }}/addemail" method="POST"><input name="email"
         size="40" value="{{ email }}"/><input type="submit" value="set email"
-        /></form></p>
+        /></form></div>
     {% endif %}
 </div>
 <div id="friends" class="following">
@@ -23,7 +32,7 @@
 Following:
 <ul>
 {% for name, md5 in friends %}
-<li><a href="{{ server_prefix }}/{{ name }}" title="{{ name }}">
+<li><a class="draggable user" href="{{ server_prefix }}/{{ name }}" title="{{ name }}">
     <img height="24" src="http://www.gravatar.com/avatar/{{ md5 }}.png"
     alt="{{ name }}" />{{ name }}</a></li>
 {% endfor %}
@@ -31,12 +40,11 @@ Following:
 Favorites:
 <ul>
 {% for bag in favorites %}
-<li><a href="{{ server_prefix }}/bags/{{ bag.name }}/tiddlers">{{ bag.name }}</a>
+<li><a class="draggable bag" href="{{ server_prefix }}/bags/{{ bag.name }}/tiddlers">{{ bag.name }}</a>
 <a href="{{ server_prefix }}/bags/{{ bag.name }}/tiddlers.atom"
     title="feed"><img
     src="http://www.mozilla.org/images/feed-icon-14x14.png"
     alt="feed" /></a></li>
-</li>
 {% endfor %}
 </div>
 {% if home == user.name %}
@@ -51,7 +59,7 @@ Favorites:
 </h1>
 <ul>
 {% for recipe in recipes %}
-<li><a href="{{ server_prefix }}/recipes/{{ recipe.name }}/tiddlers.wiki">{{ recipe.name }}</a>
+<li><a class="droppable recipe" href="{{ server_prefix }}/recipes/{{ recipe.name }}/tiddlers.wiki">{{ recipe.name }}</a>
 <a href="{{ server_prefix }}/recipes/{{ recipe.name }}/tiddlers.atom"
     title="feed"><img
     src="http://www.mozilla.org/images/feed-icon-14x14.png"
@@ -61,16 +69,16 @@ Favorites:
 <h1>Bags
 {% if home == user.name %}
 <a href="{{ server_prefix }}/createbag">✚</a>
-<a href="{{ server_prefix }}/import">➥</a></h3>
+<a href="{{ server_prefix }}/import">➥</a>
 {% endif %}
 </h1>
 <ul>
 {% for bag in bags %}
-<li><a href="{{ server_prefix }}/bags/{{ bag.name }}/tiddlers">{{ bag.name }}</a>
+<li><a class="droppable draggable bag" href="{{ server_prefix }}/bags/{{ bag.name }}/tiddlers">{{ bag.name }}</a>
 <a href="{{ server_prefix }}/bags/{{ bag.name }}/tiddlers.atom"
     title="feed"><img
     src="http://www.mozilla.org/images/feed-icon-14x14.png"
-    alt="feed" /></a></li>
+    alt="feed" /></a>
 </li>
 {% endfor %}
 </ul>
