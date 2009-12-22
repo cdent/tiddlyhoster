@@ -6,6 +6,7 @@ __version__ = '0.2'
 
 import Cookie
 import time
+import urllib
 
 from hashlib import md5
 
@@ -587,6 +588,8 @@ class Serialization(HTMLSerialization):
 
     def _make_favorite_link(self):
         name = self.environ['wsgiorg.routing_args'][1]['bag_name']
+        name = urllib.unquote(name)
+        name = unicode(name, 'utf-8')
         description = self.environ['tiddlyweb.store'].get(Bag(name)).desc
         return """
 <div id="bagfavorite">
