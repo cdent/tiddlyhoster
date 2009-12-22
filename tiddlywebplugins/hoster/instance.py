@@ -4,7 +4,8 @@ from tiddlywebwiki.instance import store_contents, store_structure
 from tiddlywebwiki.config import config
 
 store_contents['hoster'] = ['file:basecontent/main.css.tid',
-        'file:basecontent/drop.js.tid']
+        'file:basecontent/drop.js.tid',
+        'file:basecontent/delete.gif.tid']
 
 store_structure['bags']['hoster'] = {
         'desc': 'useful stuff that hoster wants to use',
