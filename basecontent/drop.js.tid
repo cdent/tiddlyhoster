@@ -1,0 +1,50 @@
+modifier: cdent
+created: 20091220134532
+modified: 20091220134532
+type: text/javascript
+tags: 
+
+var server_prefix = 'fdsafdsasasafdsafdsafdsajkfl;adfjask';
+$(function() {
+        var drop_on_recipe = function(event, ui) {
+            var source = ui.draggable
+            var target = $(this)
+            var source_path = source.attr('href').split('/');
+            var target_path = target.attr('href').split('/')
+            if (source_path[1] == server_prefix) {
+                source_path.shift();
+                target_path.shift();
+            }
+            var bag_name = source_path[2];
+            var recipe_name = target_path[2];
+            var message1 = 'source bag of ' + bag_name;
+            var message2 = 'target recipe of ' + recipe_name;
+            alert(message1 + ' : ' + message2);
+        };
+        var drop_on_bag = function(event, ui) {
+            var source = ui.draggable
+            var target = $(this)
+            var source_path = source.attr('href').split('/');
+            var target_path = target.attr('href').split('/')
+            if (source_path[1] == server_prefix) {
+                source_path.shift();
+                target_path.shift();
+            }
+            var user_name = source_path[1];
+            var bag_name = target_path[2];
+            var message1 = 'source user of ' + user_name;
+            var message2 = 'target bag of ' + bag_name;
+            alert(message1 + ' : ' + message2);
+        };
+        $(".draggable").draggable({helper: 'clone', opacity: 0.7});
+        $(".droppable.recipe").droppable({
+            accept: '.bag',
+            hoverClass: 'hover',
+            drop: drop_on_recipe,
+            });
+        $(".droppable.bag").droppable({
+            accept: '.user',
+            hoverClass: 'hover',
+            drop: drop_on_bag,
+            });
+});
