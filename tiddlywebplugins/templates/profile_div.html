@@ -1,0 +1,13 @@
+<div id="profile" class="ui-widget-content">
+    <div class="gravatar"><img
+    src="http://www.gravatar.com/avatar/{{ email_md5 }}.png" alt="gravatar">
+    </div>
+    {{ profile }}
+    {% if home == user.name %}
+    <div><form action="{{ server_prefix }}/formeditor"><input type="submit"
+            name="edit" value="edit profile"/></form></div>
+    <div><form action="{{ server_prefix }}/addemail" method="POST"><input name="email"
+        size="40" value="{{ email }}"/><input type="submit" value="set email"
+        /></form></div>
+    {% endif %}
+</div>

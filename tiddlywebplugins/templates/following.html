@@ -1,0 +1,25 @@
+<div id="friends" class="following">
+{% if home != user.name and user.name != "GUEST" and home not in user_friends %}
+<p><form action="{{ server_prefix }}/follow" method="POST">
+    <input type="submit" value="follow" />
+    <input type="hidden" name="name" value="{{ home }}" />
+</form></p>
+{% endif %}
+Following:
+<ul>
+{% for name, md5 in friends %}
+<li><a class="draggable user" href="{{ server_prefix }}/{{ name }}" title="{{ name }}">
+    <img height="24" src="http://www.gravatar.com/avatar/{{ md5 }}.png"
+    alt="{{ name }}" />{{ name }}</a></li>
+{% endfor %}
+</ul>
+Favorites:
+<ul>
+{% for bag in favorites %}
+<li><a class="draggable bag" href="{{ server_prefix }}/bags/{{ bag.name }}/tiddlers">{{ bag.name }}</a>
+<a href="{{ server_prefix }}/bags/{{ bag.name }}/tiddlers.atom"
+    title="feed"><img
+    src="http://www.mozilla.org/images/feed-icon-14x14.png"
+    alt="feed" /></a></li>
+{% endfor %}
+</div>
