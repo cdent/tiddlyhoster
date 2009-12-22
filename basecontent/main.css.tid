@@ -21,7 +21,7 @@ margin-bottom: 1em;
 
 #profile {
 float: right;
-width: 50%;
+width: 35%;
 padding-left: 1em;
 border-left: thin solid black;
 }
@@ -29,7 +29,7 @@ border-left: thin solid black;
 
 .following {
 float: right;
-width: 10%;
+width: 20%;
 font-size: 75%;
 }
 
