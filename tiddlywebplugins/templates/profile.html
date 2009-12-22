@@ -8,6 +8,11 @@
 {% if home == user.name %}
 <script src="{{ server_prefix }}/bags/hoster/tiddlers/drop.js"
     type="text/javascript"></script>
+<style>
+    .draggable:hover {
+        border: thin solid black;
+    }
+</style>
 {% endif %}
 <div id="profile" class="ui-widget-content">
     <div class="gravatar"><img

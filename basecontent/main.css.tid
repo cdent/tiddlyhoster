@@ -27,10 +27,6 @@ border-left: thin solid black;
 }
 
 
-.draggable:hover {
-    border: thin solid black;
-}
-
 .following {
 float: right;
 width: 10%;
