@@ -27,6 +27,7 @@ from tiddlyweb.wikitext import render_wikitext
 from tiddlywebplugins.hoster.instance import instance_tiddlers
 from tiddlyweb.web.extractors.simple_cookie import Extractor as SimpleExtractor
 from tiddlyweb.serializations.html import Serialization as HTMLSerialization
+from tiddlyweb.manage import make_command
 
 
 def init(config):
@@ -64,6 +65,16 @@ def init(config):
         new_serializer = ['tiddlywebplugins.hoster', 'text/html; charset=UTF-8']
         config['serializers']['text/html'] = new_serializer
         config['serializers']['default'] = new_serializer
+
+
+@make_command()
+def upstore(args):
+    """Update the store structure."""
+    from tiddlywebplugins.hoster.instance import store_structure
+    from tiddlywebplugins.instancer import Instance
+    from tiddlyweb.config import config
+    instance = Instance('.', config)
+    instance._init_store(store_structure)
 
 
 @do_html()
@@ -587,10 +598,13 @@ class Serialization(HTMLSerialization):
         return favorite_link_html + HTMLSerialization.list_tiddlers(self, bag)
 
     def _make_favorite_link(self):
-        name = self.environ['wsgiorg.routing_args'][1]['bag_name']
-        name = urllib.unquote(name)
-        name = unicode(name, 'utf-8')
-        description = self.environ['tiddlyweb.store'].get(Bag(name)).desc
+        try:
+            name = self.environ['wsgiorg.routing_args'][1]['bag_name']
+            name = urllib.unquote(name)
+            name = unicode(name, 'utf-8')
+            description = self.environ['tiddlyweb.store'].get(Bag(name)).desc
+        except KeyError: # not a bag link
+            return ''
         return """
 <div id="bagfavorite">
 <form action="%s/bagfavor" method="POST">
