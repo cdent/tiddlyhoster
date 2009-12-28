@@ -248,7 +248,10 @@ def add_email(environ, start_response):
 
 @do_html()
 def help(environ, start_response):
-    return _send_template(environ, 'help.html') 
+    from tiddlyweb.web.handler.recipe import get_tiddlers
+    environ['wsgiorg.routing_args'][1]['recipe_name'] = 'help'
+    environ['tiddlyweb.type'] = 'text/x-tiddlywiki'
+    return get_tiddlers(environ, start_response)
 
 @do_html()
 def front(environ, start_response):

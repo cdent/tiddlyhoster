@@ -26,7 +26,7 @@ setup(
         author_email = AUTHOR_EMAIL,
         platforms = 'Posix; MacOS X; Windows',
         install_requires = ['setuptools',
-            'tiddlyweb>=0.9.79',
+            'tiddlyweb>=0.9.85',
             'tiddlywebplugins.utils',
             'tiddlywebplugins.templates',
             'tiddlywebwiki',
