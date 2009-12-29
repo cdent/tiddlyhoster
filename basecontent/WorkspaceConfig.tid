@@ -1,6 +1,7 @@
 modifier: cdent
 tags: systemConfig excludeLists excludeSearch
 
+//{{{
 config.options.chkAutoSave = true;
 config.options.chkHttpReadOnly = true;
 if (! tiddler.fields["server.permissions"].split(", ").contains("write")) {
@@ -8,4 +9,6 @@ if (! tiddler.fields["server.permissions"].split(", ").contains("write")) {
     config.options.chkHttpReadOnly = true;
 }
 config.defaultCustomFields["server.workspace"] = "bags/help";
+config.options.txtTheme = "TPCTheme";
+//}}}
 
