@@ -95,6 +95,7 @@ instance_config = {
         'auth_systems': ['openid'],
         'css_uri': '/bags/hoster/tiddlers/main.css',
         'register.start_href': '/home',
+        'cookie_age': '2592000',
         }
 
 instance_tiddlers = get_tiddler_locations(store_contents,
