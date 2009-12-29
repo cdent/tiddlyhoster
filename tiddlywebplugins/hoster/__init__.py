@@ -620,7 +620,12 @@ class Serialization(HTMLSerialization):
             policy = bag.policy
         except (UserRequiredError, ForbiddenError):
             policy = None
+        try:
+            bag.policy.allows(_get_user_object(self.environ), 'delete')
+            delete = True
+        except (UserRequiredError, ForbiddenError):
+            delete = False
         data = {'title': 'TiddlyHoster Bag %s' % bag.name, 'policy': policy,
-                'bag': bag, 'representations': representations}
+                'delete': delete, 'bag': bag, 'representations': representations}
         del self.environ['tiddlyweb.title']
         return _send_template(self.environ, 'baglist.html', data)
