@@ -1,0 +1,23 @@
+modifier: cdent
+type: text/javascript
+
+$(function() {
+        $(".listedtiddler").children().slice(0).before('<img style="cursor: pointer;" height="16" alt="delete me" src="' + server_prefix + '/bags/hoster/tiddlers/delete.gif" />')
+        $(".listedtiddler img").
+        click( function() {
+            var entity = $(this).next();
+            var entity_uri = entity.attr('href');
+            if (confirm("Are you sure you wish to delete " + entity_uri)) {
+                $.ajax({
+                    type: "DELETE",
+                    url: entity_uri,
+                    success: function(msg) {
+                        entity.parent().remove();
+                    },
+                    error: function(xhr, status, error) {
+                        alert('delete of ' + entity_uri + ' failed ' + status);
+                    },
+                });
+            };
+        });
+});

@@ -4,6 +4,7 @@ from tiddlywebwiki.instance import store_contents, store_structure
 
 store_contents['hoster'] = ['file:basecontent/main.css.tid',
         'file:basecontent/drop.js.tid',
+        'file:basecontent/bagmanage.js.tid',
         'file:basecontent/delete.gif.tid',
         'file:basecontent/json2.js.tid']
 
