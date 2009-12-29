@@ -1,4 +1,6 @@
 {% extends "hosterbase.html" %}
 {% block body %}
-{{ output }}
+{% for line in output %}
+{{ line }}
+{% endfor %}
 {% endblock %}

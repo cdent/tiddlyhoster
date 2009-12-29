@@ -18,7 +18,7 @@ from tiddlyweb.model.recipe import Recipe
 from tiddlyweb.model.tiddler import Tiddler
 from tiddlyweb.store import NoBagError, NoTiddlerError, NoUserError, NoRecipeError
 from tiddlyweb.web.http import HTTP303, HTTP404, HTTP400
-from tiddlyweb.web.util import server_base_url
+from tiddlyweb.web.util import server_base_url, encode_name
 from tiddlyweb.web.wsgi import HTMLPresenter
 from tiddlywebplugins.utils import (replace_handler,
         do_html, ensure_bag, require_role)
@@ -552,7 +552,8 @@ class PrettyPresenter(HTMLPresenter):
     def __call__(self, environ, start_response):
         output = self.application(environ, start_response)
         if self._needs_title(environ):
-            output = ''.join(output)
+            if isinstance(output, basestring):
+                output = [output]
             data = {
                     'output': output,
                     'title': environ['tiddlyweb.title'],
@@ -595,27 +596,31 @@ def _get_followers(store, username):
 class Serialization(HTMLSerialization):
 
     def list_tiddlers(self, bag):
-        # XXX we should just create our own rather than riding on
-        # the core one, because this is not perfect.
-        favorite_link_html = self._make_favorite_link()
-        return favorite_link_html + HTMLSerialization.list_tiddlers(self, bag)
-
-    def _make_favorite_link(self):
         try:
             name = self.environ['wsgiorg.routing_args'][1]['bag_name']
             name = urllib.unquote(name)
             name = unicode(name, 'utf-8')
-            description = self.environ['tiddlyweb.store'].get(Bag(name)).desc
+            bag.name = name
+            bag_info = Bag(name)
+            bag_info.skinny = True
+            bag_info = self.environ['tiddlyweb.store'].get(bag_info)
+            bag.desc = bag_info.desc
+            bag.policy = bag_info.policy
         except KeyError: # not a bag link
-            return ''
-        return """
-<div id="bagfavorite">
-<form action="%s/bagfavor" method="POST">
-<input type="submit" value="favorite" />
-<input type="hidden" name="bag" value="%s" />
-</form>
-</div>
-<div id="bagdescription">
-%s
-</div>
-""" % (self._server_prefix(), name, description)
+            return HTMLSerialization.list_tiddlers(self, bag)
+
+        if (self.environ['wsgiorg.routing_args'][1].get('tiddler_name')):
+            return HTMLSerialization.list_tiddlers(self, bag)
+
+        representation_link = '%s/bags/%s/tiddlers' % (
+                self._server_prefix(), encode_name(bag.name))
+        representations = self._tiddler_list_header(representation_link)
+        try:
+            bag.policy.allows(_get_user_object(self.environ), 'manage')
+            policy = bag.policy
+        except (UserRequiredError, ForbiddenError):
+            policy = None
+        data = {'title': 'TiddlyHoster Bag %s' % bag.name, 'policy': policy,
+                'bag': bag, 'representations': representations}
+        del self.environ['tiddlyweb.title']
+        return _send_template(self.environ, 'baglist.html', data)

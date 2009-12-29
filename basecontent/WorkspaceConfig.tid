@@ -3,6 +3,9 @@ tags: systemConfig excludeLists excludeSearch
 
 config.options.chkAutoSave = true;
 config.options.chkHttpReadOnly = true;
-readOnly = true;
+if (! tiddler.fields["server.permissions"].split(", ").contains("write")) {
+    readOnly = true;
+    config.options.chkHttpReadOnly = true;
+}
 config.defaultCustomFields["server.workspace"] = "bags/help";
 

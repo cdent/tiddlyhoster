@@ -10,6 +10,24 @@ margin: 1em;
 padding: 1em;
 }
 
+#description {
+margin: 1em;
+padding: 1em;
+border: thin solid gray;
+}
+
+#policy {
+float: right;
+width: 35%;
+padding-left: 1em;
+border-left: thin solid black;
+}
+
+#policy h4, dl ul {
+margin: 0;
+padding: 0;
+}
+
 #header {
 border-bottom: thin solid black;
 margin-bottom: 1em;

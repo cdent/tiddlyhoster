@@ -11,7 +11,7 @@ store_contents['commentsystem'] = ['file:basecontent/ViewTemplate.tid',
         'http://svn.tiddlywiki.org/Trunk/contributors/MichaelMahemoff/plugins/CommentsPlugin/CommentsPlugin.js',
         ]
 
-store_contents['help'] = ['file:basecontent/HelpspaceConfig.tid']
+store_contents['help'] = ['file:basecontent/WorkspaceConfig.tid']
 
 store_structure['bags']['hoster'] = {
         'desc': 'useful stuff that hoster wants to use',
