@@ -44,6 +44,10 @@ padding-left: 1em;
 border-left: thin solid black;
 }
 
+.newbag {
+    background: red;
+}
+
 
 .following {
 float: right;

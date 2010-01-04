@@ -13,14 +13,6 @@ $(function() {
                 backgroundColor: '#000',
                 opacity: 0.5
                 },
-            buttons: {
-                Ok: function() {
-                    $(this).dialog('close');
-                    },
-                Cancel: function() {
-                    $(this).dialog('close');
-                    }
-            },
         });
         $("#bag-dialog").dialog({
             modal: true,
@@ -29,22 +21,58 @@ $(function() {
                 backgroundColor: '#000',
                 opacity: 0.5
                 },
-            buttons: {
+        });
+
+        var recipe_display = function(data, recipe_name, bag_name) {
+            data.name = recipe_name;
+            $("#recipe-dialog").dialog('option', 'buttons', {
+                Ok: function() {
+                    recipe = generateRecipe($(this).find("div.widget"));
+                    recipe.policy = data.policy; // use policy from previous get
+                    console.log(recipe, recipe.recipe); // XXX: DEBUG
+                    var self = this;
+                    json_string = JSON.stringify(recipe);
+                    $.ajax({
+                        contentType: 'application/json',
+                        processData: false,
+                        data: json_string,
+                        type: "PUT",
+                        url: server_prefix + '/recipes/' + recipe_name,
+                        success: function(msg) {
+                            $(self).dialog('close');
+                        },
+                        error: function(xhr, status, error) {
+                            alert('save of ' + recipe_name + ' failed ' + status);
+                        },
+                    });
+                    },
+                Cancel: function() {
+                    $(this).dialog('close');
+                    }
+            });
+            render(data, [bag_name], $("#recipe-dialog"));
+        }
+
+        var render_recipe_editor = function(recipe_name, bag_name) {
+            $("#recipe-dialog").dialog('open');
+            $("#recipe-dialog").dialog('option', 'title', 'Edit ' + recipe_name);
+
+            var recipe_uri = server_prefix + '/recipes/' + recipe_name + '.json';
+            $.getJSON(recipe_uri, function(data) {recipe_display(data, recipe_name, bag_name)});
+
+        };
+
+        var render_bag_editor = function(bag_name, user_name) {
+            $("#bag-dialog").dialog('open');
+            $("#bag-dialog").dialog('option', 'title', 'Edit ' + bag_name);
+            $("#bag-dialog").dialog('option', 'buttons', {
                 Ok: function() {
                     $(this).dialog('close');
                     },
                 Cancel: function() {
                     $(this).dialog('close');
                     }
-            },
-        });
-        var render_recipe_editor = function(recipe_name, bag_name) {
-            $("#recipe-dialog").dialog('open');
-            $("#recipe-dialog").dialog('option', 'title', 'Edit ' + recipe_name);
-        };
-        var render_bag_editor = function(bag_name, user_name) {
-            $("#bag-dialog").dialog('open');
-            $("#bag-dialog").dialog('option', 'title', 'Edit ' + bag_name);
+            });
         };
 
         var drop_on_recipe = function(event, ui) {
@@ -156,4 +184,64 @@ $(function() {
                 });
             };
         });
+
+render = function(recipe, bags, container) { // TODO: bags should be loaded async
+    container = container || document.body;
+    var ctx = {
+        recipe: recipe,
+        bags: bags
+    }
+    container.empty();
+    return $("#template_recipeWidget").template(ctx).
+        find(".bags li").
+            draggable({
+                connectToSortable: ".selection",
+                helper: "clone",
+                revert: "invalid"
+            }).
+            end().
+        appendTo(container). // must precede .sortable() (cf. http://dev.jqueryui.com/ticket/5019)
+        find(".recipe").sortable().end();
+};
+
+var generateRecipe = function(widget) {
+    var recipeItems = []; // XXX: rename?
+    widget.find("li").each(function(i, el) {
+        el = $(el);
+        var bag = el.text().trim();
+        var filter = el.attr("title");
+        recipeItems.push([bag, filter]);
+    });
+    var recipe = {
+        name: widget.find("h3").text().trim(),
+        desc: widget.find(".desc").text().trim(),
+        policy: {}, // TODO
+        recipe: recipeItems
+    };
+    return recipe; // XXX: ?
+};
+
+// utiltiy functions -- TODO: move into separate module
+
+// templating using "<% ... %>" (expressions) and "<%= ... %>" (values)
+// adapted from John Resig and Jeremy Ashkenas (MIT License)
+// http://ejohn.org/blog/javascript-micro-templating/
+// http://github.com/documentcloud/underscore
+$.fn.template = function(data) {
+    var str = this.text();
+    var fn = new Function("obj",
+        "var p=[],print=function(){p.push.apply(p,arguments);};" +
+        "with(obj){p.push(\'" +
+        str
+            .replace(/[\r\t\n]/g, " ")
+            .split("<%").join("\t")
+            .replace(/((^|%>)[^\t]*)'/g, "$1\r")
+            .replace(/\t=(.*?)%>/g, "',$1,'")
+            .split("\t").join("');")
+            .split("%>").join("p.push('")
+            .split("\r").join("\\'") +
+        "');}return jQuery(p.join(''));");
+    return data ? fn(data) : fn;
+};
+
 });
