@@ -6,6 +6,47 @@ tags:
 
 $(function() {
 
+        $("#recipe-dialog").dialog({
+            modal: true,
+            autoOpen: false,
+            overlay: {
+                backgroundColor: '#000',
+                opacity: 0.5
+                },
+            buttons: {
+                Ok: function() {
+                    $(this).dialog('close');
+                    },
+                Cancel: function() {
+                    $(this).dialog('close');
+                    }
+            },
+        });
+        $("#bag-dialog").dialog({
+            modal: true,
+            autoOpen: false,
+            overlay: {
+                backgroundColor: '#000',
+                opacity: 0.5
+                },
+            buttons: {
+                Ok: function() {
+                    $(this).dialog('close');
+                    },
+                Cancel: function() {
+                    $(this).dialog('close');
+                    }
+            },
+        });
+        var render_recipe_editor = function(recipe_name, bag_name) {
+            $("#recipe-dialog").dialog('open');
+            $("#recipe-dialog").dialog('option', 'title', 'Edit ' + recipe_name);
+        };
+        var render_bag_editor = function(bag_name, user_name) {
+            $("#bag-dialog").dialog('open');
+            $("#bag-dialog").dialog('option', 'title', 'Edit ' + bag_name);
+        };
+
         var drop_on_recipe = function(event, ui) {
             var source = ui.draggable
             var target = $(this)
@@ -19,7 +60,7 @@ $(function() {
             var recipe_name = target_path[2];
             var message1 = 'source bag of ' + bag_name;
             var message2 = 'target recipe of ' + recipe_name;
-            alert("If feature were implemented (coming soon!) your action would add " + message1 + ' to ' + message2);
+            render_recipe_editor(recipe_name, bag_name);
         };
 
         var drop_on_bag = function(event, ui) {
@@ -35,7 +76,7 @@ $(function() {
             var bag_name = target_path[2];
             var message1 = 'source user of ' + user_name;
             var message2 = 'target bag of ' + bag_name;
-            alert("If feature were implemented (coming soon!) your action would add " + message1 + ' to ' + message2);
+            render_bag_editor(bag_name, user_name);
         };
 
         $(".draggable").draggable({helper: 'clone', opacity: 0.7});
