@@ -1,0 +1,72 @@
+modifier: cdent
+created: 
+modified: 20100105213751
+type: text/javascript
+tags: 
+
+$(function() {
+    var setPolicy = function(container) {
+        var description = container.find("#bagdesc").text();
+        var bag_uri = window.location.href.
+            replace(/\/tiddlers/, '');
+        getBag(bag_uri, function(data) {
+            var bag = data;
+            bag.desc = description;
+            putBag(bag_uri, bag, function() {
+                container.find("#bagdesc").attr('contentEditable', false);
+                container.find('input').remove();
+                return false;
+                });
+            });
+    }
+
+    var getBag = function(uri, callback) {
+        $.getJSON(uri, callback);
+    };
+
+    var putBag = function(uri, data, callback) {
+        json_string = JSON.stringify(data);
+        $.ajax({
+            contentType: 'application/json',
+            processData: false,
+            data: json_string,
+            type: "PUT",
+            url: uri,
+            success: callback,
+            error: function(xhr, status, error) {
+                alert('update of failed: ' + status);
+                },
+            });
+    };
+        
+
+    var clicked = false;
+    $("#description").hover(function(){
+        $(this).fadeOut(100);$(this).fadeIn(500);}).
+        click(function() {
+            if (! clicked) {
+                clicked = true;
+                var desc = $(this).find("#bagdesc");
+                var text = desc.text();
+                desc.attr('contentEditable', true);
+                if (! $(this).find('input').length) {
+                    $(this).append(
+                        '<input id="descsave" type="button" value="save" />' +
+                        '<input id="desccancel" type="button" value="cancel" />');
+                }
+                $(this).find('#descsave').click(function () {
+                    setPolicy($(this).parent());
+                    clicked = false;
+                    return false;
+                });
+                $(this).find('#desccancel').click(function () {
+                    desc.attr('contentEditable', false);
+                    desc.text(text);
+                    clicked = false;
+                    $(this).parent().find('input').remove();
+                    return false;
+                });
+            }
+            return false;
+    });
+});
