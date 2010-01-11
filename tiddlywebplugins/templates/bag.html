@@ -8,7 +8,10 @@
     name="bag"
     size="60"
     value="{{ user.name }}-{{ timestamp }}">
-    <input type="checkbox" name="publicity" value="private" />Private?</p>
+    <input type="radio" name="publicity" value="public" />Public?
+    <input type="radio" name="publicity" value="protected" />Protected?
+    <input type="radio" checked="1" name="publicity" value="private" />Private?
+    </p>
     <p>Description: <input
     name="description"
     size="120" /></p>

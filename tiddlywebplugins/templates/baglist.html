@@ -47,6 +47,24 @@
     </ul></dd>
     {% endfor %}
     </dl>
+    <form action="{{ server_prefix }}/bagpolicy" method="POST">
+        Reset policy to <select name="publicity">
+            <option value="private"
+            {% if publicity == 'private' %}selected="1"{% endif %}>
+            Private</option>
+            <option value="protected"
+            {% if publicity == 'protected' %}selected="1"{% endif %}>
+            Protected</option>
+            <option value="public"
+            {% if publicity == 'public' %}selected="1"{% endif %}>
+            Public</option>
+            <option value="custom"
+            {% if publicity == 'custom' %}selected="1"{% endif %}>
+            Custom</option>
+        </select>
+        <input type="submit" value="submit" />
+        <input type="hidden" name="bag" value="{{ bag.name }}" />
+    </form>
 </div>
 {% endif %}
 

@@ -14,11 +14,12 @@ from tiddlyweb import __version__ as VERSION
 from tiddlyweb.model.policy import UserRequiredError, ForbiddenError
 from tiddlyweb.model.user import User
 from tiddlyweb.model.bag import Bag
+from tiddlyweb.model.policy import Policy
 from tiddlyweb.model.recipe import Recipe
 from tiddlyweb.model.tiddler import Tiddler
 from tiddlyweb.store import NoBagError, NoTiddlerError, NoUserError, NoRecipeError
 from tiddlyweb.web.http import HTTP303, HTTP404, HTTP400
-from tiddlyweb.web.util import server_base_url, encode_name
+from tiddlyweb.web.util import server_base_url, encode_name, bag_url
 from tiddlyweb.web.wsgi import HTMLPresenter
 from tiddlywebplugins.utils import (replace_handler,
         do_html, ensure_bag, require_role)
@@ -50,6 +51,7 @@ def init(config):
         config['selector'].add('/logout', POST=logout)
         config['selector'].add('/members', GET=members)
         config['selector'].add('/bagfavor', POST=bag_favor)
+        config['selector'].add('/bagpolicy', POST=bag_policy)
         config['selector'].add('/createrecipe', GET=get_createrecipe,
                 POST=post_createrecipe)
         config['selector'].add('/createbag', GET=get_createbag,
@@ -90,6 +92,7 @@ def post_createbag(environ, start_response):
     bag_name = environ['tiddlyweb.query'].get('bag', [''])[0]
     publicity = environ['tiddlyweb.query'].get('publicity', [''])[0]
     description = environ['tiddlyweb.query'].get('description', [''])[0]
+
     if not bag_name:
         raise HTTP400('missing data')
 
@@ -100,17 +103,19 @@ def post_createbag(environ, start_response):
         raise HTTP400('bag exists')
     except NoBagError:
         pass
-    bag.policy.owner = user['name']
-    if publicity == 'private':
-        bag.policy.read = [user['name']]
+    if publicity == 'public':
+        bag = _ensure_public_bag(
+                store, user['name'], desc=description, name=bag_name)
+    elif publicity == 'protected':
+        bag = _ensure_protected_bag(
+                store, user['name'], desc=description, name=bag_name)
     else:
-        bag.policy.read = []
-    for constraint in ['write', 'create', 'delete', 'manage']:
-        setattr(bag.policy, constraint, [user['name']])
-    bag.desc = description
-    store.put(bag)
+        bag = _ensure_private_bag(
+                store, user['name'], desc=description, name=bag_name)
 
-    raise HTTP303('%s/home' % server_base_url(environ))
+    # the bag has already been stored
+
+    raise HTTP303('%s/tiddlers' % bag_url(environ, bag))
 
 
 @do_html()
@@ -198,6 +203,31 @@ def logout(environ, start_response):
     return uri
 
 
+@require_role('MEMBER')
+def bag_policy(environ, start_response):
+    user = _get_user_object(environ)
+    store = environ['tiddlyweb.store']
+    publicity = environ['tiddlyweb.query'].get('publicity', [''])[0]
+    bag_name = environ['tiddlyweb.query'].get('bag', [''])[0]
+
+    bag = store.get(Bag(bag_name))
+    bag.policy.allows(user, 'manage')
+
+    if publicity == 'custom':
+        raise HTTP303(bag_url(environ, bag) + '/tiddlers')
+
+    if publicity == 'public':
+        bag.policy = _policy_dict_to_policy(_public_policy(user['name']))
+    elif publicity == 'protected':
+        bag.policy = _policy_dict_to_policy(_protected_policy(user['name']))
+    else:
+        bag.policy = _policy_dict_to_policy(_private_policy(user['name']))
+
+    store.put(bag)
+    raise HTTP303(bag_url(environ, bag) + '/tiddlers')
+
+
+@require_role('MEMBER')
 def bag_favor(environ, start_response):
     user = _get_user_object(environ)
     store = environ['tiddlyweb.store']
@@ -383,21 +413,79 @@ def _ensure_user_bag(store, userpage):
     ensure_bag(userpage, store, policy)
 
 
-def _ensure_public_bag(store, username):
+def determine_publicity(user, policy):
+    name = user['name']
+    if (policy.read == [name] and
+        policy.write == [name] and
+        policy.create == [name] and
+        policy.delete == [name] and
+        policy.manage == [name]):
+            return 'private'
+    if (policy.read == [] and
+        policy.write == [name] and
+        policy.create == [name] and
+        policy.delete == [name] and
+        policy.manage == [name]):
+            return 'protected'
+    if (policy.read == [] and
+        policy.write == [] and
+        policy.create == [] and
+        policy.delete == [] and
+        policy.manage == [name]):
+            return 'public'
+    return 'custom'
+
+
+def _ensure_public_bag(store, username, desc='',  name=None):
+    policy = _public_policy(username)
+    if name == None:
+        name = '%s-public' % username
+    return ensure_bag(name, store, policy, description=desc)
+
+def _ensure_protected_bag(store, username, desc='', name=None):
+    policy = _protected_policy(username)
+    if name == None:
+        name = '%s-protected' % username
+    return ensure_bag(name, store, policy, description=desc)
+
+def _ensure_private_bag(store, username, desc='', name=None):
+    policy = _private_policy(username)
+    if name == None:
+        name = '%s-private' % username
+    return ensure_bag(name, store, policy, description=desc)
+
+
+def _public_policy(username):
+    policy = {}
+    policy['manage'] = [username]
+    for constraint in ['read', 'write', 'create', 'delete']:
+        policy[constraint] = []
+    policy['owner'] = username
+    return policy
+
+
+def _protected_policy(username):
     policy = {}
     policy['read'] = []
     for constraint in ['write', 'create', 'delete', 'manage']:
         policy[constraint] = [username]
     policy['owner'] = username
-    ensure_bag('%s-public' % username, store, policy)
+    return policy
 
 
-def _ensure_private_bag(store, username):
+def _private_policy(username):
     policy = {}
     for constraint in ['read', 'write', 'create', 'delete', 'manage']:
         policy[constraint] = [username]
     policy['owner'] = username
-    ensure_bag('%s-private' % username, store, policy)
+    return policy
+
+
+def _policy_dict_to_policy(policy_dict):
+    policy = Policy()
+    for constraint in policy_dict:
+        setattr(policy, constraint, policy_dict[constraint])
+    return policy
 
 
 def _ensure_public_recipe(store, username):
@@ -615,17 +703,20 @@ class Serialization(HTMLSerialization):
         representation_link = '%s/bags/%s/tiddlers' % (
                 self._server_prefix(), encode_name(bag.name))
         representations = self._tiddler_list_header(representation_link)
+        user_object = _get_user_object(self.environ)
         try:
-            bag.policy.allows(_get_user_object(self.environ), 'manage')
+            bag.policy.allows(user_object, 'manage')
             policy = bag.policy
+            publicity = determine_publicity(user_object, policy)
         except (UserRequiredError, ForbiddenError):
             policy = None
         try:
-            bag.policy.allows(_get_user_object(self.environ), 'delete')
+            bag.policy.allows(user_object, 'delete')
             delete = True
         except (UserRequiredError, ForbiddenError):
             delete = False
         data = {'title': 'TiddlyHoster Bag %s' % bag.name, 'policy': policy,
-                'delete': delete, 'bag': bag, 'representations': representations}
+                'publicity': publicity, 'delete': delete,
+                'bag': bag, 'representations': representations}
         del self.environ['tiddlyweb.title']
         return _send_template(self.environ, 'baglist.html', data)
