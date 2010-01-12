@@ -66,8 +66,10 @@ def init(config):
 
         presenter_index = config['server_response_filters'].index(HTMLPresenter)
         config['server_response_filters'][presenter_index] = PrettyPresenter
-        simple_cookie_index = config['extractors'].index('simple_cookie')
-        config['extractors'][simple_cookie_index] = 'tiddlywebplugins.hoster.extractor'
+        # XXX: disable the specialized extractor for now. The roles it
+        # adds are not used (yet).
+        #simple_cookie_index = config['extractors'].index('simple_cookie')
+        #config['extractors'][simple_cookie_index] = 'tiddlywebplugins.hoster.extractor'
 
         new_serializer = ['tiddlywebplugins.hoster.serialization', 'text/html; charset=UTF-8']
         config['serializers']['text/html'] = new_serializer
