@@ -22,20 +22,12 @@ class Serialization(HTMLSerialization):
         If the URL is a list of bag tiddlers, we present a bag
         editing interface. Otherwise we use the parent serialization.
         """
-        try:
-            name = self.environ['wsgiorg.routing_args'][1]['bag_name']
-            name = urllib.unquote(name)
-            name = unicode(name, 'utf-8')
-            bag.name = name
-            bag_info = Bag(name)
-            bag_info.skinny = True
-            bag_info = self.environ['tiddlyweb.store'].get(bag_info)
-            bag.desc = bag_info.desc
-            bag.policy = bag_info.policy
-        except KeyError: # not a bag link
+        if (self.environ['wsgiorg.routing_args'][1].get('tiddler_name')):
             return HTMLSerialization.list_tiddlers(self, bag)
 
-        if (self.environ['wsgiorg.routing_args'][1].get('tiddler_name')):
+        try:
+            name = self.environ['wsgiorg.routing_args'][1]['bag_name']
+        except KeyError: # not a bag link
             return HTMLSerialization.list_tiddlers(self, bag)
 
         representation_link = '%s/bags/%s/tiddlers' % (

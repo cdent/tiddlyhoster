@@ -43,7 +43,9 @@ def get_favorited_bags(store, username):
     bags = []
     for favorite in favorites:
         try:
-            bags.append(store.get(Bag(favorite)))
+            bag = Bag(favorite)
+            bag.skinny = True
+            bags.append(store.get(bag))
         except NoBagError:
             pass # don't care if it doesn't exist
     return bags
@@ -218,6 +220,7 @@ def first_time_check(environ, user):
     store = environ['tiddlyweb.store']
     try:
         bag = Bag(username)
+        bag.skinny = True
         store.get(bag)
     except NoBagError:
         ensure_public_bag(store, username)
