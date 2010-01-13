@@ -31,7 +31,7 @@ def get_followers(store, username):
 def get_favorites(store, username):
     tiddler = Tiddler('favorites', username)
     try:
-        store.get(tiddler)
+        tiddler = store.get(tiddler)
         favorites = tiddler.text.splitlines()
     except NoTiddlerError:
         favorites = []
@@ -57,7 +57,7 @@ def get_friends(store, username):
     """
     tiddler = Tiddler('friends', username)
     try:
-        store.get(tiddler)
+        tiddler = store.get(tiddler)
         friends = tiddler.text.splitlines()
     except NoTiddlerError:
         friends = []
