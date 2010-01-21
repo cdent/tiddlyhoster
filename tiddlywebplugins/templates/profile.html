@@ -11,6 +11,10 @@
     var server_prefix='{{ server_prefix }}';
     var current_username='{{ user.name }}';
 </script>
+<script src="{{ server_prefix }}/bags/hoster/tiddlers/templater.js"
+    type="text/javascript"></script>
+<script src="{{ server_prefix }}/bags/hoster/tiddlers/generaterecipe.js"
+    type="text/javascript"></script>
 <script src="{{ server_prefix }}/bags/hoster/tiddlers/drop.js"
     type="text/javascript"></script>
 <style>
@@ -61,23 +65,5 @@
 <div id="bag-dialog" style="display:none">
     Feature not yet enabled.
 </div>
-<script type="text/html" id="template_recipeWidget">
-    <div class="widget">
-        <h3> <%= recipe.name %> </h3>
-        <p class="desc"> <%= recipe.desc %> </p>
-        <ol class="recipe selection sortable"> <!-- // XXX: "sortable" is mixing in functionality!? -->
-            <% for(var i = 0; i < recipe.recipe.length; i++) { %>
-            <li title="<%= recipe.recipe[i][1] %>"> <!-- // XXX: use of title attribute inappropriate -->
-                <%= recipe.recipe[i][0] %>
-            </li>
-            <% } %>
-            <% for(var i = 0; i < bags.length; i++) { %>
-            <li class="newbag"> <!-- // XXX: "draggable" is mixing in functionality!? -->
-                <%= bags[i] %>
-            </li>
-            <% } %>
-        </ol>
-        <p>Drag any bag to reorder recipe.</p>
-    </div>
-</script>
+{% include "recipewidget.html" %}
 {% endblock %}

@@ -1,0 +1,37 @@
+modifier: cdent
+created: 
+modified: 20100121204314
+type: text/javascript
+tags: 
+
+$(function() {
+    var recipe_uri = window.location.href.replace(/\/tiddlers$/, '')
+    var recipe_path = recipe_uri.split('/');
+    var recipe_name = recipe_path[recipe_path.length-1];
+    $.getJSON(recipe_uri, function(data) {data.name = recipe_name; recipe_display(data)});
+
+    var recipe_display = function(data) {
+        tiddlywebRecipe.render(data, [], $("#recipe-info"));
+        $("#recipe-info").append('<input type="button" id="recipesaver" value="Save" />')
+        $("#recipesaver").click(function() {
+            recipe = tiddlywebRecipe.generateRecipe($("div.widget"));
+            recipe.policy = data.policy; // use policy from previous get
+            recipe.desc = data.desc; // use desc from previous get
+            json_string = JSON.stringify(recipe);
+            $.ajax({
+                contentType: 'application/json',
+                processData: false,
+                data: json_string,
+                type: "PUT",
+                url: server_prefix + '/recipes/' + data.name,
+                success: function(msg) {
+                    $(self).dialog('close');
+                },
+                error: function(xhr, status, error) {
+                    alert('save of ' + recipe_name + ' failed ' + status);
+                },
+            });
+        });
+    };
+
+});

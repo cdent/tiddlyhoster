@@ -52,9 +52,10 @@ class Serialization(HTMLSerialization):
                 publicity = 'public'
             else:
                 publicity = 'custom'
+            delete = True
         except (UserRequiredError, ForbiddenError):
             policy = None
-        delete = False
+            delete = False
         data = {'title': 'TiddlyHoster Recipe %s' % recipe.name, 'policy': policy,
                 'publicity': publicity, 'delete': delete,
                 'recipe': recipe, 'bag': bag, 'representations': representations}

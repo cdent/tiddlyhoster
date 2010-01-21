@@ -1,0 +1,44 @@
+modifier: cdent
+created: 20091220134532
+modified: 20091220134532
+type: text/javascript
+tags: 
+
+var tiddlywebRecipe = {
+
+    generateRecipe: function(widget) {
+        var recipeItems = []; // XXX: rename?
+        widget.find("li").each(function(i, el) {
+            var bag_element = $(el).find('a');
+            var bag = bag_element.text().trim();
+            var filter_element = $(el).find('span.filter');
+            var filter = filter_element.text().trim();
+            recipeItems.push([bag, filter]);
+        });
+        var recipe = {
+            name: widget.find("h3").text().trim(),
+            recipe: recipeItems
+        };
+        return recipe; // XXX: ?
+    },
+
+    render: function(recipe, bags, container) { // TODO: bags should be loaded async
+        container = container || document.body;
+        var ctx = {
+            recipe: recipe,
+            bags: bags
+        }
+        container.empty();
+        return $("#template_recipeWidget").template(ctx).
+            find(".bags li").
+                draggable({
+                    connectToSortable: ".selection",
+                    helper: "clone",
+                    revert: "invalid"
+                }).
+                end().
+            appendTo(container). // must precede .sortable() (cf. http://dev.jqueryui.com/ticket/5019)
+            find(".recipe").sortable().end();
+    },
+
+};

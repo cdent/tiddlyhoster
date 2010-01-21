@@ -1,0 +1,20 @@
+<script type="text/html" id="template_recipeWidget">
+    <div class="widget">
+        <h3> <%= recipe.name %> </h3>
+        <ol class="recipe selection sortable">
+            <% for(var i = 0; i < recipe.recipe.length; i++) { %>
+            <li>
+            <a href="{{ server_prefix }}/bags/<%= recipe.recipe[i][0] %>/tiddlers">
+                <%= recipe.recipe[i][0] %></a>,
+            <span class="filter"><%= recipe.recipe[i][1] %></span>
+            </li>
+            <% } %>
+            <% for(var i = 0; i < bags.length; i++) { %>
+            <li class="newbag">
+                <%= bags[i] %>
+            </li>
+            <% } %>
+        </ol>
+        <p>Drag any bag to reorder recipe.</p>
+    </div>
+</script>
