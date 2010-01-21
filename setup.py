@@ -4,10 +4,11 @@ AUTHOR_EMAIL = 'cdent@peermore.com'
 NAME = 'tiddlywebplugins.hoster'
 DESCRIPTION = 'A hoster for TiddlyWikis'
 
+import mangler
 import os
 from setuptools import setup, find_packages
 
-VERSION = '0.9.7'
+from tiddlywebplugins.hoster import __version__ as VERSION
 
 
 # You should review the below so that it seems correct. install_requires
