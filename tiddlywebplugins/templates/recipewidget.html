@@ -4,6 +4,8 @@
         <ol class="recipe selection sortable">
             <% for(var i = 0; i < recipe.recipe.length; i++) { %>
             <li>
+            <img height="16" src="{{ server_prefix }}/bags/hoster/tiddlers/delete.gif"
+                 alt="delete" />
             <a href="{{ server_prefix }}/bags/<%= recipe.recipe[i][0] %>/tiddlers">
                 <%= recipe.recipe[i][0] %></a>,
             <span class="filter"><%= recipe.recipe[i][1] %></span>
@@ -11,7 +13,11 @@
             <% } %>
             <% for(var i = 0; i < bags.length; i++) { %>
             <li class="newbag">
-                <%= bags[i] %>
+            <img height="16" src="{{ server_prefix }}/bags/hoster/tiddlers/delete.gif"
+                 alt="delete" />
+            <a href="{{ server_prefix }}/bags/<%= bags[i] %>/tiddlers">
+                <%= bags[i] %></a>,
+            <span class="filter"></span>
             </li>
             <% } %>
         </ol>
