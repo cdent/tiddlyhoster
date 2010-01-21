@@ -15,7 +15,7 @@ clean: cleanlinks
 contents:
 	./cacher
 
-test:
+test: contents
 	py.test -x test
 
 dist: test contents
