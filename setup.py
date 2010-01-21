@@ -7,7 +7,7 @@ DESCRIPTION = 'A hoster for TiddlyWikis'
 import os
 from setuptools import setup, find_packages
 
-VERSION = '0.9.1'
+VERSION = '0.9.2'
 
 
 # You should review the below so that it seems correct. install_requires

@@ -33,7 +33,7 @@
 </h1>
 <ul>
 {% for recipe in recipes %}
-<li><a class="droppable recipe" href="{{ server_prefix }}/recipes/{{ recipe.name }}/tiddlers.wiki">{{ recipe.name }}</a>
+<li><a class="droppable recipe" href="{{ server_prefix }}/recipes/{{ recipe.name }}/tiddlers">{{ recipe.name }}</a>
 <a href="{{ server_prefix }}/recipes/{{ recipe.name }}/tiddlers.atom"
     title="feed"><img
     src="http://www.mozilla.org/images/feed-icon-14x14.png"

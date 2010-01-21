@@ -18,7 +18,7 @@ from tiddlyweb.model.recipe import Recipe
 from tiddlyweb.model.tiddler import Tiddler
 from tiddlyweb.store import NoBagError, NoTiddlerError, NoUserError, NoRecipeError
 from tiddlyweb.web.http import HTTP303, HTTP404, HTTP400
-from tiddlyweb.web.util import server_base_url, encode_name, bag_url
+from tiddlyweb.web.util import server_base_url, encode_name, bag_url, recipe_url
 from tiddlyweb.web.wsgi import HTMLPresenter
 from tiddlywebplugins.utils import replace_handler, do_html, require_role
 from tiddlyweb.wikitext import render_wikitext
@@ -56,7 +56,8 @@ def init(config):
         config['selector'].add('/logout', POST=logout)
         config['selector'].add('/members', GET=members_list)
         config['selector'].add('/bagfavor', POST=bag_favor)
-        config['selector'].add('/bagpolicy', POST=bag_policy)
+        config['selector'].add('/bagpolicy', POST=entity_policy)
+        config['selector'].add('/recipepolicy', POST=entity_policy)
         config['selector'].add('/createrecipe', GET=get_createrecipe,
                 POST=post_createrecipe)
         config['selector'].add('/createbag', GET=get_createbag,
@@ -206,12 +207,22 @@ def logout(environ, start_response):
 
 
 @require_role('MEMBER')
-def bag_policy(environ, start_response):
-    user = get_user_object(environ)
-    store = environ['tiddlyweb.store']
+def entity_policy(environ, start_response):
     publicity = environ['tiddlyweb.query'].get('publicity', [''])[0]
     bag_name = environ['tiddlyweb.query'].get('bag', [''])[0]
+    recipe_name = environ['tiddlyweb.query'].get('recipe', [''])[0]
 
+    if bag_name:
+        return _bag_policy(environ, bag_name, publicity)
+    elif recipe_name:
+        return _recipe_policy(environ, recipe_name, publicity)
+    else:
+        raise HTTP400('missing form data')
+
+
+def _bag_policy(environ, bag_name, publicity):
+    user = get_user_object(environ)
+    store = environ['tiddlyweb.store']
     bag = Bag(bag_name)
     bag.skinny = True
     bag = store.get(bag)
@@ -229,6 +240,25 @@ def bag_policy(environ, start_response):
 
     store.put(bag)
     raise HTTP303(bag_url(environ, bag) + '/tiddlers')
+
+
+def _recipe_policy(environ, recipe_name, publicity):
+    user = get_user_object(environ)
+    store = environ['tiddlyweb.store']
+    recipe = Recipe(recipe_name)
+    recipe = store.get(recipe)
+    recipe.policy.allows(user, 'manage')
+
+    if publicity == 'custom':
+        raise HTTP303(recipe_url(environ, recipe) + '/tiddlers')
+
+    if publicity == 'public':
+        recipe.policy.read = []
+    else:
+        recipe.policy.read = [user['name']]
+
+    store.put(recipe)
+    raise HTTP303(recipe_url(environ, recipe) + '/tiddlers')
 
 
 @require_role('MEMBER')
