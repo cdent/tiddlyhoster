@@ -32,7 +32,7 @@ class Serialization(HTMLSerialization):
         except KeyError: # not a bag link
             try:
                 name = self.environ['wsgiorg.routing_args'][1]['recipe_name']
-                return self._recipe_list(bag, name)
+                return self._recipe_list(bag, name.decode('utf-8'))
             except KeyError:
                 return HTMLSerialization.list_tiddlers(self, bag)
 

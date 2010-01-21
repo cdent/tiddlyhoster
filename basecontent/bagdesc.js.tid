@@ -11,7 +11,7 @@ $(function() {
             replace(/\/tiddlers/, '');
         getBag(bag_uri, function(data) {
             var bag = data;
-            bag.desc = decodeURIComponent(escape(description));
+            bag.desc = decodeURIComponent(encodeURIComponent(description));
             putBag(bag_uri, bag, function() {
                 container.find("#bagdesc").attr('contentEditable', false);
                 container.find('input').remove();
