@@ -19,7 +19,7 @@ def send_template(environ, template_name, template_data=None):
             'version': VERSION,
             'user': user,
             'member_role': 'MEMBER',
-            'title': 'TiddlyHoster',
+            'title': '',
             'userpage': {
                 'link': '%s/home' % server_prefix,
                 'title': 'homepage',

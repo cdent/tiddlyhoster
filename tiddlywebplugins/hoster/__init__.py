@@ -2,7 +2,7 @@
 Host customizable TiddlyWikis on TiddlyWeb.
 """
 
-__version__ = '0.9.8'
+__version__ = '0.9.9'
 
 import Cookie
 import time
@@ -17,7 +17,7 @@ from tiddlyweb.model.policy import Policy
 from tiddlyweb.model.recipe import Recipe
 from tiddlyweb.model.tiddler import Tiddler
 from tiddlyweb.store import NoBagError, NoTiddlerError, NoUserError, NoRecipeError
-from tiddlyweb.web.http import HTTP303, HTTP404, HTTP400
+from tiddlyweb.web.http import HTTP302, HTTP303, HTTP404, HTTP400
 from tiddlyweb.web.util import server_base_url, encode_name, bag_url, recipe_url
 from tiddlyweb.web.wsgi import HTMLPresenter
 from tiddlywebplugins.utils import replace_handler, do_html, require_role
@@ -62,6 +62,7 @@ def init(config):
                 POST=post_createrecipe)
         config['selector'].add('/createbag', GET=get_createbag,
                 POST=post_createbag)
+        config['selector'].add('/home', GET=get_home)
         # THE FOLLOWING MUST COME LAST
         config['selector'].add('/{userpage:segment}', GET=user_page)
 
@@ -89,7 +90,8 @@ def init(config):
 @do_html()
 @require_role('MEMBER')
 def get_createbag(environ, start_response):
-    return send_template(environ, 'bag.html', {'timestamp': int(time.time())}) 
+    return send_template(environ, 'bag.html', {
+        'timestamp': int(time.time()), 'title': 'Create Bag'}) 
 
 
 @require_role('MEMBER')
@@ -129,7 +131,8 @@ def post_createbag(environ, start_response):
 @do_html()
 @require_role('MEMBER')
 def get_createrecipe(environ, start_response):
-    return send_template(environ, 'recipe.html', {'timestamp': int(time.time())}) 
+    return send_template(environ, 'recipe.html', {
+        'timestamp': int(time.time()), 'title': 'Create Recipe'}) 
 
 
 @require_role('MEMBER')
@@ -189,7 +192,8 @@ def members_list(environ, start_response):
         email = get_email_tiddler(store, member)
         email_md5 = md5(email.lower()).hexdigest()
         members.append((member, email_md5))
-    return send_template(environ, 'members.html', {'members': members}) 
+    return send_template(environ, 'members.html', {
+        'members': members, 'title': 'Members'}) 
 
 
 def logout(environ, start_response):
@@ -312,7 +316,16 @@ def help_page(environ, start_response):
 
 @do_html()
 def front(environ, start_response):
-    return send_template(environ, 'home.html')
+    return send_template(environ, 'home.html', {
+        'title': 'Welcome'})
+
+
+def get_home(environ, start_response):
+    user = environ['tiddlyweb.usersign']
+    if user['name'] == 'GUEST' or 'MEMBER' not in user['roles']:
+        raise HTTP302(server_base_url(environ) + '/')
+    else:
+        raise HTTP302(server_base_url(environ) + '/' + user['name'])
 
 
 @do_html()
@@ -321,9 +334,6 @@ def user_page(environ, start_response):
     user = environ['tiddlyweb.usersign']
 
     first_time_check(environ, user)
-
-    if userpage == 'home':
-        userpage = user['name']
 
     store = environ['tiddlyweb.store']
 
@@ -360,6 +370,7 @@ def user_page(environ, start_response):
             'favorites': kept_favorites,
             'home': userpage,
             'profile': profile_html,
+            'title': userpage,
             'email': email,
             'email_md5': email_md5,
             'user': get_user_object(environ)}
@@ -387,6 +398,7 @@ def get_profiler(environ, start_response):
     data = {}
     data['tiddler'] = tiddler
     data['return_url'] = return_url
+    data['title'] = 'Edit Profile'
     return send_template(environ, 'profile_edit.html', data)
 
 

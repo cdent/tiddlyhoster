@@ -1,4 +1,5 @@
 recursive-include test *
 include README
+include mangler.py
 include tiddlywebplugins/templates/*.html
 recursive-include tiddlywebplugins/hoster/resources *
