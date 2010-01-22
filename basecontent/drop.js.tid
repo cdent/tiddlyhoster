@@ -29,7 +29,6 @@ $(function() {
                 Ok: function() {
                     recipe = tiddlywebRecipe.generateRecipe($(this).find("div.widget"));
                     recipe.policy = data.policy; // use policy from previous get
-                    console.log(recipe, recipe.recipe); // XXX: DEBUG
                     var self = this;
                     json_string = JSON.stringify(recipe);
                     $.ajax({
