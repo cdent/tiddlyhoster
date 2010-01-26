@@ -2,7 +2,7 @@
 Host customizable TiddlyWikis on TiddlyWeb.
 """
 
-__version__ = '0.9.11'
+__version__ = '0.9.12'
 
 import Cookie
 import time
@@ -281,6 +281,7 @@ def bag_favor(environ, start_response):
     raise HTTP303('%s/home' % server_base_url(environ))
 
 
+@require_role('MEMBER')
 def add_friend(environ, start_response):
     user = get_user_object(environ)
     store = environ['tiddlyweb.store']
@@ -289,7 +290,11 @@ def add_friend(environ, start_response):
     friends = get_friends(store, user['name'])
     if new_friend and new_friend not in friends:
         friends.append(new_friend)
-    tiddler = store.get(Tiddler('friends', user['name']))
+    tiddler = Tiddler('friends', user['name'])
+    try:
+        tiddler = store.get(tiddler)
+    except NoTiddlerError:
+        pass # is okay if tiddler doesn't exist yet
     tiddler.text = '\n'.join(friends)
     store.put(tiddler)
     raise HTTP303('%s/home' % server_base_url(environ))
