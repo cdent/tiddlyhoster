@@ -2,7 +2,7 @@
 Host customizable TiddlyWikis on TiddlyWeb.
 """
 
-__version__ = '0.9.12'
+__version__ = '0.9.13'
 
 import Cookie
 import time
@@ -275,7 +275,11 @@ def bag_favor(environ, start_response):
     # XXX I suppose a set would be okay here.
     if new_favorite and new_favorite not in favorites:
         favorites.append(new_favorite)
-    tiddler = store.get(Tiddler('favorites', user['name']))
+    tiddler = Tiddler('favorites', user['name'])
+    try:
+        tiddler = store.get(tiddler)
+    except NoTiddlerError:
+        pass # is okay if tiddler doesn't exist yet
     tiddler.text = '\n'.join(favorites)
     store.put(tiddler)
     raise HTTP303('%s/home' % server_base_url(environ))
