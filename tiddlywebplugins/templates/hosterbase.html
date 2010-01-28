@@ -30,6 +30,8 @@
                     <li><a href="{{ help.link }}">{{ help.title }}</a></li>
                     <li><a
                         href="http://github.com/cdent/tiddlyhoster/issues">Bugs</a></li>
+                    <li><a
+                        href="{{ server_prefix }}/feedbag?sort=-modified;limit=20">Feedbag</a></li>
                     {% if user.name != "GUEST" %}
                     <li><form action="{{ server_prefix }}/logout"
                         method="POST"><input type="submit" value="logout" />

@@ -2,7 +2,7 @@
 Host customizable TiddlyWikis on TiddlyWeb.
 """
 
-__version__ = '0.9.13'
+__version__ = '0.9.14'
 
 import Cookie
 import time
@@ -25,6 +25,7 @@ from tiddlyweb.wikitext import render_wikitext
 from tiddlywebplugins.hoster.instance import instance_tiddlers
 from tiddlyweb.serializations.html import Serialization as HTMLSerialization
 from tiddlyweb.manage import make_command
+from tiddlyweb.web.sendtiddlers import send_tiddlers
 
 from tiddlywebplugins.hoster.template import send_template
 from tiddlywebplugins.hoster.data import (
@@ -62,6 +63,7 @@ def init(config):
                 POST=post_createrecipe)
         config['selector'].add('/createbag', GET=get_createbag,
                 POST=post_createbag)
+        config['selector'].add('/feedbag', GET=public_stuff)
         config['selector'].add('/home', GET=get_home)
         # THE FOLLOWING MUST COME LAST
         config['selector'].add('/{userpage:segment}', GET=user_page)
@@ -92,6 +94,22 @@ def init(config):
 def get_createbag(environ, start_response):
     return send_template(environ, 'bag.html', {
         'timestamp': int(time.time()), 'title': 'Create Bag'}) 
+
+
+def public_stuff(environ, start_response):
+    """
+    A collection of the most recent stuff.
+    A place where _all_ the content readable
+    by the current user can be viewed.
+    """
+    user = get_user_object(environ)
+    store = environ['tiddlyweb.store']
+    kept_bags = get_stuff(store, store.list_bags(), user)
+    tmp_bag = Bag('tmpbag', tmpbag=True)
+    for bag in kept_bags:
+        bag = store.get(bag)
+        tmp_bag.add_tiddlers(bag.gen_tiddlers())
+    return send_tiddlers(environ, start_response, tmp_bag)
 
 
 @require_role('MEMBER')
