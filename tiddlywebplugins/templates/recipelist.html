@@ -20,6 +20,13 @@
 
 <h3>Recipe {{ recipe.name }}</h3>
 
+<div id="bagfavorite">
+    <form action="{{ server_prefix }}/recipefavor" method="POST">
+    <input type="submit" value="bookmark" />
+    <input type="hidden" name="recipe" value="{{ recipe.name }}" />
+    </form>
+</div>
+
 <div id="description">
     <strong>Description:</strong>
     <span id="bagdesc">{{ recipe.desc }}</span>

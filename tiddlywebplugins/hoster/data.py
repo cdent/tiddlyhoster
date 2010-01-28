@@ -6,7 +6,7 @@ for now.
 """
 
 from tiddlyweb.model.tiddler import Tiddler
-from tiddlyweb.store import NoTiddlerError, NoBagError
+from tiddlyweb.store import NoTiddlerError, NoBagError, NoRecipeError
 from tiddlyweb.model.policy import UserRequiredError, ForbiddenError, Policy
 from tiddlyweb.model.user import User
 from tiddlyweb.model.recipe import Recipe
@@ -26,6 +26,16 @@ def get_followers(store, username):
         if username in get_friends(store, member_name):
             followers.append(member_name)
     return followers
+
+
+def get_bookmarks(store, username):
+    tiddler = Tiddler('bookmarks', username)
+    try:
+        tiddler = store.get(tiddler)
+        bookmarks = tiddler.text.splitlines()
+    except NoTiddlerError:
+        bookmarks = []
+    return bookmarks
 
 
 def get_favorites(store, username):
@@ -49,6 +59,18 @@ def get_favorited_bags(store, username):
         except NoBagError:
             pass # don't care if it doesn't exist
     return bags
+
+
+def get_bookmarked_recipes(store, username):
+    bookmarks = get_bookmarks(store, username)
+    recipes = []
+    for bookmark in bookmarks:
+        try:
+            recipe = Recipe(bookmark)
+            recipes.append(store.get(recipe))
+        except NoRecipeError:
+            pass # don't care if it doesn't exist
+    return recipes
 
 
 def get_friends(store, username):

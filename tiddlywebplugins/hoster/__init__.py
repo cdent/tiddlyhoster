@@ -2,7 +2,7 @@
 Host customizable TiddlyWikis on TiddlyWeb.
 """
 
-__version__ = '0.9.15'
+__version__ = '0.9.16'
 
 import Cookie
 import time
@@ -33,7 +33,8 @@ from tiddlywebplugins.hoster.data import (
         get_friends, get_followers, get_email_tiddler, get_profile,
         ensure_public_recipe, ensure_private_recipe,
         ensure_public_bag, ensure_protected_bag, ensure_user_bag,
-        ensure_private_bag, get_favorited_bags, get_favorites,
+        ensure_private_bag, get_bookmarked_recipes,
+        get_favorited_bags, get_favorites, get_bookmarks,
         public_policy, protected_policy, private_policy)
 from tiddlywebplugins.hoster.presenter import PrettyPresenter
 
@@ -57,6 +58,7 @@ def init(config):
         config['selector'].add('/logout', POST=logout)
         config['selector'].add('/members', GET=members_list)
         config['selector'].add('/bagfavor', POST=bag_favor)
+        config['selector'].add('/recipefavor', POST=recipe_favor)
         config['selector'].add('/bagpolicy', POST=entity_policy)
         config['selector'].add('/recipepolicy', POST=entity_policy)
         config['selector'].add('/createrecipe', GET=get_createrecipe,
@@ -287,6 +289,26 @@ def _recipe_policy(environ, recipe_name, publicity):
 
 
 @require_role('MEMBER')
+def recipe_favor(environ, start_response):
+    user = get_user_object(environ)
+    store = environ['tiddlyweb.store']
+    ensure_user_bag(store, user['name'])
+    new_bookmark = environ['tiddlyweb.query'].get('recipe', [''])[0]
+    bookmarks = get_bookmarks(store, user['name'])
+    # XXX I suppose a set would be okay here.
+    if new_bookmark and new_bookmark not in bookmarks:
+        bookmarks.append(new_bookmark)
+    tiddler = Tiddler('bookmarks', user['name'])
+    try:
+        tiddler = store.get(tiddler)
+    except NoTiddlerError:
+        pass # is okay if tiddler doesn't exist yet
+    tiddler.text = '\n'.join(bookmarks)
+    store.put(tiddler)
+    raise HTTP303('%s/home' % server_base_url(environ))
+
+
+@require_role('MEMBER')
 def bag_favor(environ, start_response):
     user = get_user_object(environ)
     store = environ['tiddlyweb.store']
@@ -391,6 +413,8 @@ def user_page(environ, start_response):
     kept_bags = get_stuff(store, store.list_bags(), user, userpage)
     kept_favorites = get_stuff(store, get_favorited_bags(store, userpage),
             user)
+    kept_bookmarks = get_stuff(store, get_bookmarked_recipes(store, userpage),
+            user)
     email = get_email_tiddler(store, userpage)
     email_md5 = md5(email.lower()).hexdigest()
     data = {'bags': kept_bags,
@@ -398,6 +422,7 @@ def user_page(environ, start_response):
             'friends': friends,
             'recipes': kept_recipes,
             'favorites': kept_favorites,
+            'bookmarks': kept_bookmarks,
             'home': userpage,
             'profile': profile_html,
             'title': userpage,

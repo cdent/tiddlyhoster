@@ -8,7 +8,7 @@
 Following:
 <ul>
 {% for name, md5 in friends %}
-<li><a class="draggable user" href="{{ server_prefix }}/{{ name }}" title="{{ name }}">
+<li><a class="draggable deleteable user" href="{{ server_prefix }}/{{ name }}" title="{{ name }}">
     <img height="24" src="http://www.gravatar.com/avatar/{{ md5 }}.png"
     alt="{{ name }}" />{{ name }}</a></li>
 {% endfor %}
@@ -16,10 +16,21 @@ Following:
 Favorites:
 <ul>
 {% for bag in favorites %}
-<li><a class="draggable bag" href="{{ server_prefix }}/bags/{{ bag.name }}/tiddlers">{{ bag.name }}</a>
+<li><a class="draggable deleteable bag" href="{{ server_prefix }}/bags/{{ bag.name }}/tiddlers">{{ bag.name }}</a>
 <a href="{{ server_prefix }}/bags/{{ bag.name }}/tiddlers.atom"
     title="feed"><img
     src="http://www.mozilla.org/images/feed-icon-14x14.png"
     alt="feed" /></a></li>
 {% endfor %}
+</ul>
+Bookmarks:
+<ul>
+{% for recipe in bookmarks %}
+<li><a class="recipe deleteable" href="{{ server_prefix }}/recipes/{{ recipe.name }}/tiddlers">{{ recipe.name }}</a>
+<a href="{{ server_prefix }}/recipes/{{ recipe.name }}/tiddlers.atom"
+    title="feed"><img
+    src="http://www.mozilla.org/images/feed-icon-14x14.png"
+    alt="feed" /></a></li>
+{% endfor %}
+</ul>
 </div>

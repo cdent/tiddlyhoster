@@ -137,13 +137,16 @@ $(function() {
             };
         });
 
-        $(".following .draggable").before('<img style="cursor: pointer;" height="16" alt="delete me" src="' + server_prefix + '/bags/hoster/tiddlers/delete.gif" />').prev().
+        $(".following .deleteable").before('<img style="cursor: pointer;" height="16" alt="delete me" src="' + server_prefix + '/bags/hoster/tiddlers/delete.gif" />').prev().
         click( function() {
             var entity = $(this).next();
             var entity_uri = entity.attr('href').replace('/tiddlers', '');
             var tiddler_name = 'friends';
             if (entity.hasClass('bag')) {
                 tiddler_name = 'favorites';
+            }
+            if (entity.hasClass('recipe')) {
+                tiddler_name = 'bookmarks';
             }
             var entity_path = entity_uri.split('/');
             var entity_name = entity_path[entity_path.length-1];
