@@ -36,6 +36,8 @@ class Serialization(HTMLSerialization):
                 name = unicode(name, 'utf-8')
                 return self._recipe_list(bag, name)
             except KeyError:
+                if bag.name == 'feedbag':
+                    return self._bag_list(bag)
                 return HTMLSerialization.list_tiddlers(self, bag)
 
     def _recipe_list(self, bag, recipe_name):
@@ -66,8 +68,11 @@ class Serialization(HTMLSerialization):
 
 
     def _bag_list(self, bag):
-        representation_link = '%s/bags/%s/tiddlers' % (
-                self._server_prefix(), encode_name(bag.name))
+        if bag.name == 'feedbag':
+            representation_link = '%s/feedbag' % (self._server_prefix())
+        else:
+            representation_link = '%s/bags/%s/tiddlers' % (
+                    self._server_prefix(), encode_name(bag.name))
         representations = self._tiddler_list_header(representation_link)
         user_object = get_user_object(self.environ)
         publicity = ''

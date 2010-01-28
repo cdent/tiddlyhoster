@@ -106,6 +106,9 @@ def public_stuff(environ, start_response):
     store = environ['tiddlyweb.store']
     kept_bags = get_stuff(store, store.list_bags(), user)
     tmp_bag = Bag('feedbag', tmpbag=True)
+    tmp_bag.policy.manage = ["NONE"]
+    tmp_bag.policy.delete = ["NONE"]
+    tmp_bag.desc = 'Recent Public Stuff'
     for bag in kept_bags:
         bag = store.get(bag)
         tmp_bag.add_tiddlers(bag.gen_tiddlers())
