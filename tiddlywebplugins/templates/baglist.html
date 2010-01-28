@@ -18,7 +18,7 @@
 
 <h3>Bag {{ bag.name }}</h3>
 
-{% if not bag.name=='feedbag' %}
+{% if bag.name!='feedbag' %}
 <div id="bagfavorite">
     <form action="{{ server_prefix }}/bagfavor" method="POST">
     <input type="submit" value="favorite" />
