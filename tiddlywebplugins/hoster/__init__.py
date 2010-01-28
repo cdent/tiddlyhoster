@@ -2,7 +2,7 @@
 Host customizable TiddlyWikis on TiddlyWeb.
 """
 
-__version__ = '0.9.14'
+__version__ = '0.9.15'
 
 import Cookie
 import time
@@ -63,7 +63,7 @@ def init(config):
                 POST=post_createrecipe)
         config['selector'].add('/createbag', GET=get_createbag,
                 POST=post_createbag)
-        config['selector'].add('/feedbag', GET=public_stuff)
+        config['selector'].add('/feedbag[.{format}]', GET=public_stuff)
         config['selector'].add('/home', GET=get_home)
         # THE FOLLOWING MUST COME LAST
         config['selector'].add('/{userpage:segment}', GET=user_page)
@@ -105,7 +105,7 @@ def public_stuff(environ, start_response):
     user = get_user_object(environ)
     store = environ['tiddlyweb.store']
     kept_bags = get_stuff(store, store.list_bags(), user)
-    tmp_bag = Bag('tmpbag', tmpbag=True)
+    tmp_bag = Bag('feedbag', tmpbag=True)
     for bag in kept_bags:
         bag = store.get(bag)
         tmp_bag.add_tiddlers(bag.gen_tiddlers())
