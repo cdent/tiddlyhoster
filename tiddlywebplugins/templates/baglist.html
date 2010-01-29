@@ -16,7 +16,11 @@
     type="text/javascript"></script>
 {% endif %}
 
-<h3>Bag {{ bag.name }}</h3>
+<h3>Bag {{ bag.name }}
+    {% if write %}
+    <a href="{{ server_prefix }}/import?bag={{ bag.name|escape }}">➥</a>
+    {% endif %}
+</h3>
 
 {% if bag.name!='feedbag' %}
 <div id="bagfavorite">
