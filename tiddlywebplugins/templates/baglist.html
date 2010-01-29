@@ -17,7 +17,7 @@
 {% endif %}
 
 <h3>Bag {{ bag.name }}
-    {% if write %}
+    {% if policy %}
     <a href="{{ server_prefix }}/import?bag={{ bag.name|escape }}">➥</a>
     {% endif %}
 </h3>
