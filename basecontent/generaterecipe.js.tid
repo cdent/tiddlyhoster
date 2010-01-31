@@ -10,13 +10,13 @@ var tiddlywebRecipe = {
         var recipeItems = []; // XXX: rename?
         widget.find("li").each(function(i, el) {
             var bag_element = $(el).find('a');
-            var bag = decodeURIComponent($.trim(encodeURIComponent(bag_element.text())));
+            var bag = decodeURIComponent(encodeURIComponent($.trim(bag_element.text())));
             var filter_element = $(el).find('span.filter');
-            var filter = decodeURIComponent($.trim(encodeURIComponent(filter_element.text())));
+            var filter = decodeURIComponent(encodeURIComponent($.trim(filter_element.text())));
             recipeItems.push([bag, filter]);
         });
         var recipe = {
-            name: decodeURIComponent($.trim(encodeURIComponent(widget.find("h3").text()))),
+            name: decodeURIComponent(encodeURIComponent($.trim(widget.find("h3").text()))),
             recipe: recipeItems
         };
         return recipe; // XXX: ?
