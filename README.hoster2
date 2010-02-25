@@ -1,0 +1,45 @@
+
+The hoster2 branch of tiddlyhoster is an evolution of hoster 
+to, primarily, change how usernames are managed. In the original
+hoster, an OpenID is used as the username which can lead to
+bizzare home page URLs like
+
+  http://hoster.peermore.com/foo.example.com/server/openid/identify
+
+which ain't gonna a work and nobody wants to show that to their
+mom.
+
+hoster2 will do the following:
+
+* Change the registration process so a username gets created.
+* During that registration process a login with an openid will
+  be required. This openid will be associated with the new 
+  username.
+* An interface will be provided to add or remove additional
+  openids.
+* A user's homepage will be hoster.peermore.com/username.
+  Depending on how experiments with virtual domains go in
+  tiddlyspace, username.hoster.peermore.com may be added as 
+  well but it is not yet clear how "getting at stuff" is going
+  to work out. There are likely cross domain issues when 
+  dynamically loading content to be resolved.
+
+From an implementation standpoint, username<->openid associations
+can be managed in tiddlers. A challenger asks for an openid, finds
+the username that the openid maps to, puts that username in the
+cookie. When displaying the "these are your associations" interface,
+the mapping is reversed.
+
+Other (optional) things to explore in hoster2 including:
+
+* Making the simple_cookie more robust.
+* Installing some default validation handling, or at least ways of
+  handling optional installation thereof.
+* Both of those boil to: make it safer.
+
+Things remaining from the original hoster:
+
+* Bag policy management, to enable "custom" policies, that is,
+  adding users to bags.
+* Message wall (messages from the system to users).
+* Continued improvements to uploads.
