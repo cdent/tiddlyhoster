@@ -77,7 +77,7 @@
 
 <h3>Tiddlers</h3>
 <ul>
-{% for tiddler in bag.gen_tiddlers() %}
+{% for tiddler in tiddlers %}
 <li class="listedtiddler"><a
     href="{{ server_prefix }}/recipes/{{ recipe.name|uri }}/tiddlers/{{ tiddler.title|uri }}">{{ tiddler.title }}</a></li>
 {% endfor %}

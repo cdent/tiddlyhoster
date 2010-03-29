@@ -18,7 +18,7 @@ from tiddlywebplugins.hoster.data import determine_publicity, get_user_object
 
 class Serialization(HTMLSerialization):
 
-    def list_tiddlers(self, bag):
+    def list_tiddlers(self, tiddlers):
         """
         If the URL is a list of bag tiddlers, we present a bag
         editing interface. Otherwise we use the parent serialization.
@@ -28,19 +28,17 @@ class Serialization(HTMLSerialization):
 
         try:
             name = self.environ['wsgiorg.routing_args'][1]['bag_name']
-            return self._bag_list(bag)
+            return self._bag_list(tiddlers)
         except KeyError: # not a bag link
             try:
                 name = self.environ['wsgiorg.routing_args'][1]['recipe_name']
                 name = urllib.unquote(name)
                 name = unicode(name, 'utf-8')
-                return self._recipe_list(bag, name)
+                return self._recipe_list(tiddlers, name)
             except KeyError:
-                if bag.name == 'feedbag':
-                    return self._bag_list(bag)
-                return HTMLSerialization.list_tiddlers(self, bag)
+                return self._bag_list(tiddlers)
 
-    def _recipe_list(self, bag, recipe_name):
+    def _recipe_list(self, tiddlers, recipe_name):
         representation_link = '%s/recipes/%s/tiddlers' % (
                 self._server_prefix(), encode_name(recipe_name))
         representations = self._tiddler_list_header(representation_link)
@@ -62,17 +60,21 @@ class Serialization(HTMLSerialization):
             delete = False
         data = {'title': 'TiddlyHoster Recipe %s' % recipe.name, 'policy': policy,
                 'publicity': publicity, 'delete': delete,
-                'recipe': recipe, 'bag': bag, 'representations': representations}
+                'recipe': recipe, 'tiddlers': tiddlers, 'representations': representations}
         del self.environ['tiddlyweb.title']
         return send_template(self.environ, 'recipelist.html', data)
 
 
-    def _bag_list(self, bag):
-        if bag.name == 'feedbag':
+    def _bag_list(self, tiddlers):
+        if 'feedbag' in self.environ['selector.matches']:
             representation_link = '%s/feedbag' % (self._server_prefix())
         else:
+            name = self.environ['wsgiorg.routing_args'][1]['bag_name']
+            name = urllib.unquote(name)
+            name = name.decode('utf-8')
             representation_link = '%s/bags/%s/tiddlers' % (
-                    self._server_prefix(), encode_name(bag.name))
+                    self._server_prefix(), encode_name(name))
+            bag = self.environ['tiddlyweb.store'].get(Bag(name))
         representations = self._tiddler_list_header(representation_link)
         user_object = get_user_object(self.environ)
         publicity = ''
@@ -89,6 +91,6 @@ class Serialization(HTMLSerialization):
             delete = False
         data = {'title': 'TiddlyHoster Bag %s' % bag.name, 'policy': policy,
                 'publicity': publicity, 'delete': delete,
-                'bag': bag, 'representations': representations}
+                'bag': bag, 'tiddlers': tiddlers, 'representations': representations}
         del self.environ['tiddlyweb.title']
         return send_template(self.environ, 'baglist.html', data)

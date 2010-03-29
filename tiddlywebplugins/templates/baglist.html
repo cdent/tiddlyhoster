@@ -79,7 +79,7 @@
 </div>
 
 <ul>
-{% for tiddler in bag.gen_tiddlers() %}
+{% for tiddler in tiddlers %}
 <li class="listedtiddler"><a
     href="{{ server_prefix }}/bags/{{ tiddler.bag|uri }}/tiddlers/{{ tiddler.title|uri }}">{{ tiddler.title }}</a></li>
 {% endfor %}

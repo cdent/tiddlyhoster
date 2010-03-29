@@ -111,10 +111,12 @@ def public_stuff(environ, start_response):
     tmp_bag.policy.manage = ["NONE"]
     tmp_bag.policy.delete = ["NONE"]
     tmp_bag.desc = 'Recent Public Stuff'
+    tiddlers = Tiddlers()
     for bag in kept_bags:
         bag = store.get(bag)
-        tmp_bag.add_tiddlers(bag.gen_tiddlers())
-    return send_tiddlers(environ, start_response, tmp_bag)
+        for tiddler in store.list_bag_tiddlers(bag):
+            tiddlers.add(tiddler)
+    return send_tiddlers(environ, start_response, tiddler=tiddlers)
 
 
 @require_role('MEMBER')
