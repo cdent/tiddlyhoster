@@ -18,7 +18,7 @@
 
 <h3>Bag {{ bag.name }}
     {% if policy %}
-    <a href="{{ server_prefix }}/import?bag={{ bag.name|escape }}">➥</a>
+    <a href="{{ server_prefix }}/import?bag={{ bag.name|uri }}">➥</a>
     {% endif %}
 </h3>
 
@@ -81,7 +81,7 @@
 <ul>
 {% for tiddler in bag.gen_tiddlers() %}
 <li class="listedtiddler"><a
-    href="{{ server_prefix }}/bags/{{ tiddler.bag }}/tiddlers/{{ tiddler.title }}">{{ tiddler.title }}</a></li>
+    href="{{ server_prefix }}/bags/{{ tiddler.bag|uri }}/tiddlers/{{ tiddler.title|uri }}">{{ tiddler.title }}</a></li>
 {% endfor %}
 </ul>
 {% endblock %}

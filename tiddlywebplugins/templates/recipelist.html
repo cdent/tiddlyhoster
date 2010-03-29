@@ -70,7 +70,7 @@
 <h3>Recipe</h3>
 <ol>
 {% for bag, filter in recipe.get_recipe() %}
-<li class="recipebag"><a href="{{ server_prefix }}/bags/{{ bag }}/tiddlers">{{ bag }}</a>, {{ filter }}</li>
+<li class="recipebag"><a href="{{ server_prefix }}/bags/{{ bag|uri }}/tiddlers">{{ bag }}</a>, {{ filter }}</li>
 {% endfor %}
 </ol>
 </div>
@@ -79,7 +79,7 @@
 <ul>
 {% for tiddler in bag.gen_tiddlers() %}
 <li class="listedtiddler"><a
-    href="{{ server_prefix }}/recipes/{{ recipe.name }}/tiddlers/{{ tiddler.title }}">{{ tiddler.title }}</a></li>
+    href="{{ server_prefix }}/recipes/{{ recipe.name|uri }}/tiddlers/{{ tiddler.title|uri }}">{{ tiddler.title }}</a></li>
 {% endfor %}
 </ul>
 {% if delete %}

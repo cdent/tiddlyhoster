@@ -377,13 +377,15 @@ def get_home(environ, start_response):
     if user['name'] == 'GUEST' or 'MEMBER' not in user['roles']:
         raise HTTP302(server_base_url(environ) + '/')
     else:
-        raise HTTP302(server_base_url(environ) + '/' + user['name'])
+        raise HTTP302(server_base_url(environ) + '/' + encode_name(user['name']))
 
 
 @do_html()
 def user_page(environ, start_response):
     userpage = environ['wsgiorg.routing_args'][1]['userpage']
     user = environ['tiddlyweb.usersign']
+
+    userpage = _decode_name(userpage)
 
     first_time_check(environ, user)
 
@@ -481,3 +483,7 @@ def post_profile(environ, start_response):
     store.put(tiddler)
 
     raise HTTP303(return_url)
+
+
+def _decode_name(name):
+    return urllib.unquote(name).decode('utf-8')

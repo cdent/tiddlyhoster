@@ -37,8 +37,8 @@
 </h1>
 <ul>
 {% for recipe in recipes %}
-<li><a class="droppable recipe" href="{{ server_prefix }}/recipes/{{ recipe.name }}/tiddlers">{{ recipe.name }}</a>
-<a href="{{ server_prefix }}/recipes/{{ recipe.name }}/tiddlers.atom"
+<li><a class="droppable recipe" href="{{ server_prefix }}/recipes/{{ recipe.name|uri }}/tiddlers">{{ recipe.name }}</a>
+<a href="{{ server_prefix }}/recipes/{{ recipe.name|uri }}/tiddlers.atom"
     title="feed"><img
     src="http://www.mozilla.org/images/feed-icon-14x14.png"
     alt="feed" /></a></li>
@@ -52,8 +52,8 @@
 </h1>
 <ul>
 {% for bag in bags %}
-<li><a class="droppable draggable bag" href="{{ server_prefix }}/bags/{{ bag.name }}/tiddlers">{{ bag.name }}</a>
-<a href="{{ server_prefix }}/bags/{{ bag.name }}/tiddlers.atom"
+<li><a class="droppable draggable bag" href="{{ server_prefix }}/bags/{{ bag.name|uri }}/tiddlers">{{ bag.name }}</a>
+<a href="{{ server_prefix }}/bags/{{ bag.name|uri }}/tiddlers.atom"
     title="feed"><img
     src="http://www.mozilla.org/images/feed-icon-14x14.png"
     alt="feed" /></a>
