@@ -34,6 +34,7 @@ setup(
             'tiddlywebplugins.wimporter>=0.8',
             'tiddlywebplugins.register',
             'tiddlywebplugins.instancer>=0.3.2',
+            'tiddlywebplugins.openid2',
             ],
         include_package_data = True,
         zip_safe = False,

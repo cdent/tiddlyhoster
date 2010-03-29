@@ -112,7 +112,7 @@ store_structure['recipes']['help'] = {
 instance_config = {
         'system_plugins': ['tiddlywebplugins.hoster'],
         'twanager_plugins': ['tiddlywebplugins.hoster'],
-        'auth_systems': ['openid'],
+        'auth_systems': ['tiddlywebplugins.openid2'],
         'css_uri': '/bags/hoster/tiddlers/main.css',
         'register.start_href': '/home',
         'cookie_age': '2592000',

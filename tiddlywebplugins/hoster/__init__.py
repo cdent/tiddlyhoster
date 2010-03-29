@@ -2,7 +2,7 @@
 Host customizable TiddlyWikis on TiddlyWeb.
 """
 
-__version__ = '0.9.21'
+__version__ = '0.9.30'
 
 import Cookie
 import time
