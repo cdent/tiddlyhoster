@@ -66,8 +66,12 @@ class Serialization(HTMLSerialization):
 
 
     def _bag_list(self, tiddlers):
-        if 'feedbag' in self.environ['selector.matches']:
+        if '/feedbag' in self.environ['selector.matches'][0]:
             representation_link = '%s/feedbag' % (self._server_prefix())
+            bag = Bag('feedbag')
+            bag.policy.manage = ["NONE"]
+            bag.policy.delete = ["NONE"]
+            bag.desc = 'Recent Public Stuff'
         else:
             name = self.environ['wsgiorg.routing_args'][1]['bag_name']
             name = urllib.unquote(name)

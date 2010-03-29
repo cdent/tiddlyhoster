@@ -13,6 +13,7 @@ from hashlib import md5
 from tiddlyweb.model.policy import UserRequiredError, ForbiddenError
 from tiddlyweb.model.user import User
 from tiddlyweb.model.bag import Bag
+from tiddlyweb.model.collections import Tiddlers
 from tiddlyweb.model.policy import Policy
 from tiddlyweb.model.recipe import Recipe
 from tiddlyweb.model.tiddler import Tiddler
@@ -107,16 +108,12 @@ def public_stuff(environ, start_response):
     user = get_user_object(environ)
     store = environ['tiddlyweb.store']
     kept_bags = get_stuff(store, store.list_bags(), user)
-    tmp_bag = Bag('feedbag', tmpbag=True)
-    tmp_bag.policy.manage = ["NONE"]
-    tmp_bag.policy.delete = ["NONE"]
-    tmp_bag.desc = 'Recent Public Stuff'
     tiddlers = Tiddlers()
     for bag in kept_bags:
         bag = store.get(bag)
         for tiddler in store.list_bag_tiddlers(bag):
             tiddlers.add(tiddler)
-    return send_tiddlers(environ, start_response, tiddler=tiddlers)
+    return send_tiddlers(environ, start_response, tiddlers=tiddlers)
 
 
 @require_role('MEMBER')
