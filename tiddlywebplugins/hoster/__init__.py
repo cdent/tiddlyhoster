@@ -50,7 +50,7 @@ def init(config):
     # XXX this clobbers?
     config['instance_tiddlers'] = instance_tiddlers
 
-    if config['selector']:
+    if 'selector' in config:
         replace_handler(config['selector'], '/', dict(GET=front))
         config['selector'].add('/help', GET=help_page)
         config['selector'].add('/formeditor', GET=get_profiler, POST=post_profile)
