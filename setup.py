@@ -8,11 +8,10 @@ import mangler
 import os
 from setuptools import setup, find_packages
 
-from tiddlywebplugins.hoster import __version__ as VERSION
+# update in __init__ too please
+VERSION = '0.9.31'
 
 
-# You should review the below so that it seems correct. install_requires
-# especially.
 setup(
         namespace_packages = ['tiddlywebplugins'],
         name = NAME,
@@ -27,7 +26,7 @@ setup(
         author_email = AUTHOR_EMAIL,
         platforms = 'Posix; MacOS X; Windows',
         install_requires = ['setuptools',
-            'tiddlyweb>=1.1.dev2',
+            'tiddlyweb>=1.1.dev5',
             'tiddlywebplugins.utils',
             'tiddlywebplugins.templates>=0.8',
             'tiddlywebwiki',
