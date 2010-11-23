@@ -27,9 +27,9 @@ store_contents['hoster'] = ['file:basecontent/main.css.tid',
         'file:basecontent/ui.css.tid',
         ]
 
-store_contents['commentsystem'] = ['file:basecontent/ViewTemplate.tid',
-        'http://svn.tiddlywiki.org/Trunk/contributors/MichaelMahemoff/plugins/CommentsPlugin/CommentsPlugin.js',
-        ]
+#store_contents['commentsystem'] = ['file:basecontent/ViewTemplate.tid',
+#        'http://svn.tiddlywiki.org/Trunk/contributors/MichaelMahemoff/plugins/CommentsPlugin/CommentsPlugin.js',
+#        ]
 
 store_contents['help'] = ['file:basecontent/WorkspaceConfig.tid']
 
@@ -57,17 +57,17 @@ store_structure['bags']['helpcomments'] = {
             }
         }
 
-store_structure['bags']['commentsystem'] = {
-        'desc': 'comments mgt tools',
-        'policy': {
-            'read': [],
-            'write': ['R:ADMIN'],
-            'create': ['R:ADMIN'],
-            'delete': ['R:ADMIN'],
-            'manage': ['R:ADMIN'],
-            'owner': 'administrator',
-            }
-        }
+# store_structure['bags']['commentsystem'] = {
+#         'desc': 'comments mgt tools',
+#         'policy': {
+#             'read': [],
+#             'write': ['R:ADMIN'],
+#             'create': ['R:ADMIN'],
+#             'delete': ['R:ADMIN'],
+#             'manage': ['R:ADMIN'],
+#             'owner': 'administrator',
+#             }
+#         }
 
 store_structure['bags']['help'] = {
         'desc': 'help documentation',
