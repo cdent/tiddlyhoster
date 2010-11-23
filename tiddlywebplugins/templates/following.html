@@ -6,7 +6,7 @@
 </form></p>
 {% endif %}
 Following:
-<ul>
+<ul class="entitylist">
 {% for name, md5 in friends %}
 <li><a class="draggable deleteable user" href="{{ server_prefix }}/{{ name|uri }}" title="{{ name }}">
     <img height="24" src="http://www.gravatar.com/avatar/{{ md5 }}.png"
@@ -14,7 +14,7 @@ Following:
 {% endfor %}
 </ul>
 Favorites:
-<ul>
+<ul class="entitylist">
 {% for bag in favorites %}
 <li><a class="draggable deleteable bag" href="{{ server_prefix }}/bags/{{ bag.name|uri }}/tiddlers">{{ bag.name }}</a>
 <a href="{{ server_prefix }}/bags/{{ bag.name|uri }}/tiddlers.atom"
@@ -24,7 +24,7 @@ Favorites:
 {% endfor %}
 </ul>
 Bookmarks:
-<ul>
+<ul class="entitylist">
 {% for recipe in bookmarks %}
 <li><a class="recipe deleteable" href="{{ server_prefix }}/recipes/{{ recipe.name|uri }}/tiddlers">{{ recipe.name }}</a>
 <a href="{{ server_prefix }}/recipes/{{ recipe.name|uri }}/tiddlers.atom"

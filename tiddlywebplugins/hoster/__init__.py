@@ -2,7 +2,7 @@
 Host customizable TiddlyWikis on TiddlyWeb.
 """
 
-__version__ = '0.9.31'
+__version__ = '0.9.34'
 
 import Cookie
 import time
@@ -43,9 +43,11 @@ def init(config):
     import tiddlywebwiki
     import tiddlywebplugins.register
     import tiddlywebplugins.wimporter
+    import tiddlywebplugins.logout
     tiddlywebwiki.init(config)
     tiddlywebplugins.register.init(config)
     tiddlywebplugins.wimporter.init(config)
+    tiddlywebplugins.logout.init(config)
     
     # XXX this clobbers?
     config['instance_tiddlers'] = instance_tiddlers
@@ -57,7 +59,6 @@ def init(config):
         config['selector'].add('/formeditor', GET=get_profiler, POST=post_profile)
         config['selector'].add('/addemail', POST=add_email)
         config['selector'].add('/follow', POST=add_friend)
-        config['selector'].add('/logout', POST=logout)
         config['selector'].add('/members', GET=members_list)
         config['selector'].add('/bagfavor', POST=bag_favor)
         config['selector'].add('/recipefavor', POST=recipe_favor)
@@ -217,20 +218,6 @@ def members_list(environ, start_response):
         members.append((member, email_md5))
     return send_template(environ, 'members.html', {
         'members': members, 'title': 'Members'}) 
-
-
-def logout(environ, start_response):
-    cookie = Cookie.SimpleCookie()
-    path = environ['tiddlyweb.config']['server_prefix']
-    cookie['tiddlyweb_user'] = ''
-    cookie['tiddlyweb_user']['path'] = '%s/' % path
-    cookie['tiddlyweb_user']['expires'] = '%s' % (time.ctime(time.time()-6000))
-    uri = server_base_url(environ)
-    start_response('303 See Other', [
-        ('Set-Cookie', cookie.output(header='')),
-        ('Location', uri),
-        ])
-    return uri
 
 
 @require_role('MEMBER')

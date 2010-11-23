@@ -58,8 +58,8 @@ div#header {
 
 .following {
     float: right;
-    width: 20%;
-    font-size: 75%;
+    width: 25%;
+    font-size: 80%;
 }
 
 a img {
@@ -138,4 +138,14 @@ div#footer {
     text-decoration:none;
     font-family: sans-serif;
     font-size: 150%;
+}
+
+.entitylist li {
+    list-style: none;
+    text-indent: -2em;
+}
+
+.entitylist img {
+    vertical-align: middle;
+    padding: .25em;
 }

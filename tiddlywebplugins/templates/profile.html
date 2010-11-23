@@ -35,7 +35,7 @@
 <a href="{{ server_prefix }}/createrecipe">✚</a>
 {% endif %}
 </h1>
-<ul>
+<ul class="entitylist">
 {% for recipe in recipes %}
 <li><a class="droppable recipe" href="{{ server_prefix }}/recipes/{{ recipe.name|uri }}/tiddlers">{{ recipe.name }}</a>
 <a href="{{ server_prefix }}/recipes/{{ recipe.name|uri }}/tiddlers.atom"
@@ -50,7 +50,7 @@
 <a href="{{ server_prefix }}/import">➥</a>
 {% endif %}
 </h1>
-<ul>
+<ul class="entitylist">
 {% for bag in bags %}
 <li><a class="droppable draggable bag" href="{{ server_prefix }}/bags/{{ bag.name|uri }}/tiddlers">{{ bag.name }}</a>
 <a href="{{ server_prefix }}/bags/{{ bag.name|uri }}/tiddlers.atom"

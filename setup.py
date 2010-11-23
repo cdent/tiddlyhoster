@@ -9,7 +9,7 @@ import os
 from setuptools import setup, find_packages
 
 # update in __init__ too please
-VERSION = '0.9.31'
+VERSION = '0.9.34'
 
 
 setup(
@@ -34,6 +34,7 @@ setup(
             'tiddlywebplugins.register',
             'tiddlywebplugins.instancer>=0.3.2',
             'tiddlywebplugins.openid2',
+            'tiddlywebplugins.logout',
             ],
         include_package_data = True,
         zip_safe = False,
