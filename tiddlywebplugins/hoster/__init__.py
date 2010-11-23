@@ -53,6 +53,7 @@ def init(config):
     if 'selector' in config:
         replace_handler(config['selector'], '/', dict(GET=front))
         config['selector'].add('/help', GET=help_page)
+        config['selector'].add('/edit', GET=editor)
         config['selector'].add('/formeditor', GET=get_profiler, POST=post_profile)
         config['selector'].add('/addemail', POST=add_email)
         config['selector'].add('/follow', POST=add_friend)
@@ -367,8 +368,10 @@ def help_page(environ, start_response):
 
 @do_html()
 def front(environ, start_response):
-    return send_template(environ, 'home.html', {
-        'title': 'Welcome'})
+    user = environ['tiddlyweb.usersign']
+    if user['name'] != 'GUEST' and 'MEMBER' in user['roles']:
+        raise HTTP302(server_base_url(environ) + '/' + encode_name(user['name']))
+    return send_template(environ, 'home.html', { 'title': 'Welcome'})
 
 
 def get_home(environ, start_response):
@@ -432,6 +435,10 @@ def user_page(environ, start_response):
             'user': get_user_object(environ)}
 
     return send_template(environ, 'profile.html', data)
+
+@do_html()
+def editor(environ, start_response):
+    return send_template(environ, 'editor.html')
 
 
 @do_html()
