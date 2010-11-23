@@ -4,33 +4,36 @@ modified: 20091217104146
 type: text/css
 tags: 
 
-body {
-font-family: sans-serif;
-margin: 1em;
-padding: 1em;
+html,body {
+    margin:0;
+    padding:0;
+    height:100%; /* needed for container min-height */
+    background: black;
+    font-family: sans-serif;
+    font-size: 90%;
 }
 
 #description {
-margin: 1em;
-padding: 1em;
-border: thin solid gray;
+    margin: 1em;
+    padding: 1em;
+    border: thin solid gray;
 }
 
 #policy {
-float: right;
-width: 35%;
-padding-left: 1em;
-border-left: thin solid black;
+    float: right;
+    width: 35%;
+    padding-left: 1em;
+    border-left: thin solid black;
 }
 
 #policy h4, dl ul {
-margin: 0;
-padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
-#header {
-border-bottom: thin solid black;
-margin-bottom: 1em;
+div#header {
+    padding: .25em;
+    border-bottom: thick solid black;
 }
 
 .hover {
@@ -38,21 +41,25 @@ margin-bottom: 1em;
 }
 
 #profile {
-float: right;
-width: 35%;
-padding-left: 1em;
-border-left: thin solid black;
+    float: right;
+    width: 35%;
+    padding-left: 1em;
+    border-left: thin solid black;
 }
 
 .newbag {
     background: green;
 }
 
+#welcome img {
+    float: right; 
+    padding-left: 2em;
+}
 
 .following {
-float: right;
-width: 20%;
-font-size: 75%;
+    float: right;
+    width: 20%;
+    font-size: 75%;
 }
 
 a img {
@@ -60,48 +67,75 @@ a img {
 }
 
 #friends ul li {
-list-style: none;
-text-indent: -2em;
+    list-style: none;
+    text-indent: -2em;
 }
 
 #friends a {
-text-decoration: none;
+    text-decoration: none;
 }
 
-.wide ul li, form {
-vertical-align: top;
-margin-left: 0;
-padding-left: 0;
-padding-right: 2em;
-list-style: none;
-display: inline;
+.wide ul li, .wide form {
+    padding-right: 2em;
+    list-style: none;
+    display: inline;
 }
 
-#body {
-    overflow: auto;
-    padding-top: 1em;
-    padding-bottom: 1em;
-    width: 100%
+div#page {
+    margin-left: auto;
+    margin-right: auto;
+    width: 75%;
+    min-width: 750px;
+    background: white;
+    position: relative;
+    height:auto !important; /* real browsers */
+    height: 100%; /* IE6: treaded as min-height*/
+    min-height: 100%; /* real browsers */
 }
 
-#footer {
-font-size: 75%;
-margin-top: 1em;
-padding-top: 1em;
-border-top: thin solid black;
+div#header {
+    padding: .25em;
+    border-bottom: thick solid black;
+}
+div#content {
+    padding: 0em 1em 5em 1em;
+}
+
+div#footer {
+    position: absolute;
+    bottom: 0;
+    background: #d0d0d0;
+    width: 100%;
+    font-size: 70%;
+}
+
+#footer li {
+    float: right;
 }
 
 .description {
 }
 
 .tiddlerslink {
-padding: .25em;
+    padding: .25em;
 }
 
 #tiddlersheader {
-padding: .25em;
+    padding: .25em;
 }
 
 .tiddler {
-margin: 2em;
+    margin: 2em;
+}
+
+.buttonlink {
+    border: thin solid black;
+    -webkit-border-radius: .5em;
+    -moz-border-radius: .5em;
+    padding: .25em .5em .25em .5em;
+    background: #ffbb88;
+    color: black;
+    text-decoration:none;
+    font-family: sans-serif;
+    font-size: 150%;
 }
