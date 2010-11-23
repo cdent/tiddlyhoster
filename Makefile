@@ -5,6 +5,7 @@
 
 clean: cleanlinks
 	find . -name "*.pyc" |xargs rm || true
+	rm -r homestead || true
 	rm -r dist || true
 	rm -r build || true
 	rm -r *.egg-info || true
@@ -26,9 +27,12 @@ upload: clean pypi
 pypi: test
 	python setup.py sdist upload
 
+dev: contents
+	./betsy homestead
+	(cd homestead &&  ln -s ../tiddlywebplugins . && \
+	    ln -s ../tiddlywebplugins/templates .)
+
 devlinks:
-	ln -sf ~/src/tiddlyweb-plugins/logout/logout.py .
-	ln -sf ~/src/tiddlyweb-plugins/twedit/twedit.py .
 	ln -sf ./tiddlywebplugins/templates .
 
 cleanlinks:
