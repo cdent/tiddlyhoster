@@ -76,10 +76,13 @@
 </div>
 
 <h3>Tiddlers</h3>
-<ul>
+<ul class="entitylist">
 {% for tiddler in tiddlers %}
 <li class="listedtiddler"><a
-    href="{{ server_prefix }}/recipes/{{ recipe.name|uri }}/tiddlers/{{ tiddler.title|uri }}">{{ tiddler.title }}</a></li>
+    href="{{ server_prefix }}/recipes/{{ recipe.name|uri }}/tiddlers/{{ tiddler.title|uri }}">{{ tiddler.title }}</a>
+<span class="modified">{{tiddler.modified|format_modified}}</span>,
+<span class="modifier"><a href="/{{ tiddler.modifier|uri }}">{{tiddler.modifier}}</a></span>
+</li>
 {% endfor %}
 </ul>
 {% if delete %}

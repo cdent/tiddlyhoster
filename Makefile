@@ -30,10 +30,10 @@ pypi: test
 dev: contents
 	./betsy homestead
 	(cd homestead &&  ln -s ../tiddlywebplugins . && \
-	    ln -s ../tiddlywebplugins/templates .)
-
-devlinks:
-	ln -sf ./tiddlywebplugins/templates .
+	    ln -s ../tiddlywebplugins/templates . && \
+	    ln -s ../manger.py . && \
+	    ln -s ../refresh .)
+	echo "import mangler" >> tiddlywebconfig.py
 
 cleanlinks:
 	rm logout.py twedit.py templates || true

@@ -149,3 +149,12 @@ div#footer {
     vertical-align: middle;
     padding: .25em;
 }
+
+.modified, .modifier {
+    color: #666;
+    font-size: 80%;
+}
+
+.modifier a {
+    text-decoration: none;
+}
