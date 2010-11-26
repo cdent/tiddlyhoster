@@ -18,7 +18,7 @@ var deleteURI = function(uri, entity) {
 };
 
 $(function() {
-    $(".listedtiddler").prepend('<img style="cursor: pointer;" height="16" alt="delete me" src="' + server_prefix + '/bags/hoster/tiddlers/delete.gif" />')
+    $(".listedtiddler").prepend('<img style="cursor: pointer;" height="16" alt="delete me" src="' + server_prefix + '/bags/hoster/tiddlers/delete.png" />')
     $(".listedtiddler img").click( function() {
         var entity = $(this).next();
         var entity_uri = entity.attr('href');

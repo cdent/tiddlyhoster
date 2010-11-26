@@ -1,19 +1,30 @@
 {% extends "hosterbase.html" %}
 {% block body %}
 <div id="profile">
+{% if tiddler.title == "profile" %}
     <p>Type in some profile information in the text area. Tells us a
     bit about yourself. You can use TiddlyWiki syntax to mark things
     up as you like.</p>
     <p>You may want to talk about the resources you are making
     available with Hoster.</p>
+{% elif tiddler.title %}
+    <p>Make your edits to {{ tiddler.title }}.</p>
+{% else %}
+    <p>Make your edits to.</p>
+{% endif %}
 </div>
+
 <form method="POST">
+{% if tiddler.title %}
+<input type="hidden" name="title" value="{{ tiddler.title }}">
+{% else %}
+Title: <input size="40" name="title"><br />
+{% endif %}
+<input type="hidden" name="bag" value="{{ tiddler.bag }}">
+<input type="hidden" name="return_url" value="{{ return_url }}">
 <textarea name="text" rows="24" style="width:60%">
 {{ tiddler.text }}
 </textarea>
-<input type="hidden" name="title" value="{{ tiddler.title }}">
-<input type="hidden" name="bag" value="{{ tiddler.bag }}">
-<input type="hidden" name="return_url" value="{{ return_url }}">
 <input type="submit">
 <a href="{{ return_url }}">Cancel</a>
 </form>

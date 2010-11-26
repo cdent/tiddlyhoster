@@ -17,9 +17,11 @@ from tiddlyweb.model.collections import Tiddlers
 from tiddlyweb.model.policy import Policy
 from tiddlyweb.model.recipe import Recipe
 from tiddlyweb.model.tiddler import Tiddler
-from tiddlyweb.store import NoBagError, NoTiddlerError, NoUserError, NoRecipeError
+from tiddlyweb.store import (NoBagError, NoTiddlerError,
+        NoUserError, NoRecipeError, StoreError)
 from tiddlyweb.web.http import HTTP302, HTTP303, HTTP404, HTTP400
-from tiddlyweb.web.util import server_base_url, encode_name, bag_url, recipe_url
+from tiddlyweb.web.util import (server_base_url, encode_name,
+        bag_url, recipe_url, tiddler_url)
 from tiddlyweb.web.wsgi import HTMLPresenter
 from tiddlywebplugins.utils import replace_handler, do_html, require_role
 from tiddlyweb.wikitext import render_wikitext
@@ -55,8 +57,8 @@ def init(config):
     if 'selector' in config:
         replace_handler(config['selector'], '/', dict(GET=front))
         config['selector'].add('/help', GET=help_page)
-        config['selector'].add('/edit', GET=editor)
-        config['selector'].add('/formeditor', GET=get_profiler, POST=post_profile)
+        config['selector'].add('/formeditor', GET=get_tiddler_edit,
+                POST=post_tiddler_edit)
         config['selector'].add('/addemail', POST=add_email)
         config['selector'].add('/follow', POST=add_friend)
         config['selector'].add('/members', GET=members_list)
@@ -426,34 +428,50 @@ def editor(environ, start_response):
 
 
 @do_html()
-def get_profiler(environ, start_response):
+def get_tiddler_edit(environ, start_response):
     usersign = environ['tiddlyweb.usersign']
     store = environ['tiddlyweb.store']
+    title = environ['tiddlyweb.query'].get('title', [''])[0]
+    bag_name = environ['tiddlyweb.query'].get('bag', [''])[0]
     username = usersign['name']
 
     if not 'MEMBER' in usersign['roles']:
         raise HTTP404('bad edit')
 
-    tiddler = get_profile(store, usersign, username)
+    if not title and not bag_name:
+        tiddler = get_profile(store, usersign, username)
+        page_title = 'Edit Profile'
+        return_url = '%s/home' % server_base_url(environ)
+    elif not title:
+        tiddler = Tiddler('', bag_name)
+        page_title = 'Edit New Tiddler'
+        return_url = ''
+    else:
+        tiddler = Tiddler(title, bag_name)
+        page_title = 'Edit %s' % title
+        return_url = tiddler_url(environ, tiddler)
+        try:
+            tiddler = store.get(tiddler)
+        except StoreError:
+            pass
     bag = Bag(tiddler.bag)
     bag = store.get(bag)
     bag.policy.allows(usersign, 'write')
 
-    return_url = '%s/home' % server_base_url(environ)
 
     data = {}
     data['tiddler'] = tiddler
     data['return_url'] = return_url
-    data['title'] = 'Edit Profile'
+    data['title'] = page_title
     return send_template(environ, 'profile_edit.html', data)
 
 
-def post_profile(environ, start_response):
+def post_tiddler_edit(environ, start_response):
     usersign = environ['tiddlyweb.usersign']
     text = environ['tiddlyweb.query'].get('text', [''])[0]
     title = environ['tiddlyweb.query'].get('title', [''])[0]
     bag = environ['tiddlyweb.query'].get('bag', [''])[0]
-    return_url = environ['tiddlyweb.query'].get('return_url', ['/home'])[0]
+    return_url = environ['tiddlyweb.query'].get('return_url', [''])[0]
 
     store = environ['tiddlyweb.store']
 
@@ -469,6 +487,9 @@ def post_profile(environ, start_response):
     bag.policy.allows(usersign, 'write')
 
     store.put(tiddler)
+
+    if not return_url:
+        return_url = tiddler_url(environ, tiddler)
 
     raise HTTP303(return_url)
 
