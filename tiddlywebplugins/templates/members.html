@@ -1,7 +1,7 @@
 {% extends "hosterbase.html" %}
 {% block body %}
 <div id="friends">
-<ul>
+<ul class="entitylist">
 {% for member, md5 in members %}
 <li><a href="{{ server_prefix }}/{{ member|uri }}" title="{{ member }}">
     <img height="24" src="http://www.gravatar.com/avatar/{{ md5 }}.png"

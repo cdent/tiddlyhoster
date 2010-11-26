@@ -150,6 +150,10 @@ div#footer {
     padding: .25em;
 }
 
+#header img {
+    vertical-align: middle;
+}
+
 .modified, .modifier {
     color: #666;
     font-size: 80%;

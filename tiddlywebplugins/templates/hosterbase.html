@@ -21,8 +21,10 @@
             <div id='header' class="wide">
                 <ul>
                     {% if user.name != "GUEST" %}
-                    <li>User: <a
-                        href="{{ userpage.link }}">{{ user.pretty_name }}</a></li>
+                    <li><a
+                        href="{{ userpage.link }}">
+                        <img src="/bags/hoster/tiddlers/cat.jpg"
+                        alt="Home" /></a></li>
                     <li><a href="{{ server_prefix
                         }}/members">Members</a></li>
                     {% else %}
