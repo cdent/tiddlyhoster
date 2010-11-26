@@ -132,7 +132,6 @@ def post_createbag(environ, start_response):
     bag = Bag(bag_name)
 
     try:
-        bag.skinny = True
         bag = store.get(bag)
         raise HTTP400('bag exists')
     except NoBagError:
@@ -179,7 +178,6 @@ def post_createrecipe(environ, start_response):
         pass
 
     try:
-        bag.skinny = True
         bag = store.get(bag)
         try:
             bag.policy.allows(user, 'read')
@@ -238,7 +236,6 @@ def _bag_policy(environ, bag_name, publicity):
     user = get_user_object(environ)
     store = environ['tiddlyweb.store']
     bag = Bag(bag_name)
-    bag.skinny = True
     bag = store.get(bag)
     bag.policy.allows(user, 'manage')
 
@@ -439,7 +436,6 @@ def get_profiler(environ, start_response):
 
     tiddler = get_profile(store, usersign, username)
     bag = Bag(tiddler.bag)
-    bag.skinny = True
     bag = store.get(bag)
     bag.policy.allows(usersign, 'write')
 
@@ -466,7 +462,6 @@ def post_profile(environ, start_response):
     tiddler.modifier = usersign['name']
     bag = Bag(bag)
     try:
-        bag.skinny = True
         bag = store.get(bag)
     except NoBagError, exc:
         raise HTTP404('tiddler %s not found: %s' % (tiddler.title, exc))
