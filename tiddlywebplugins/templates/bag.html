@@ -8,9 +8,12 @@
     name="bag"
     size="60"
     value="{{ user.name }}-{{ timestamp }}">
-    <input type="radio" name="publicity" value="public" />Public?
-    <input type="radio" name="publicity" value="protected" />Protected?
-    <input type="radio" checked="1" name="publicity" value="private" />Private?
+    <input type="radio" name="publicity" value="public" /><abbr
+        title="Anyone can edit">Public?</abbr>
+    <input type="radio" name="publicity" value="protected" /><abbr
+        title="Members can edit">Protected?</abbr>
+    <input type="radio" checked="1" name="publicity" value="private"
+    /><abbr title="Only you can edit">Private?</abbr>
     </p>
     <p>Description: <input
     name="description"
