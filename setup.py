@@ -35,6 +35,7 @@ setup(
             'tiddlywebplugins.instancer>=0.3.2',
             'tiddlywebplugins.openid2',
             'tiddlywebplugins.logout',
+            'tiddlywebplugins.form',
             ],
         include_package_data = True,
         zip_safe = False,

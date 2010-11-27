@@ -81,6 +81,9 @@
 <h3>Tiddlers
 {% if policy %}
 <a href="{{ server_prefix }}/formeditor?bag={{ bag.name }}">✚</a>
+<a href="{{ server_prefix }}/uploader?bag={{ bag.name|uri }}"><img 
+    src="{{ server_prefix }}/bags/hoster/tiddlers/picture_add.png"
+    alt="Upload Binary" /></a>
 {% endif %}
 </h3>
 <ul class="entitylist">

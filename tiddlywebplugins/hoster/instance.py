@@ -28,6 +28,7 @@ store_contents['hoster'] = ['file:basecontent/main.css.tid',
         'file:basecontent/pencil.png',
         'file:basecontent/delete.png',
         'file:basecontent/credits.tid',
+        'file:basecontent/picture_add.png',
         ]
 
 #store_contents['commentsystem'] = ['file:basecontent/ViewTemplate.tid',

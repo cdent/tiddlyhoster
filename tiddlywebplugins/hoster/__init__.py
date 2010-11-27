@@ -46,10 +46,12 @@ def init(config):
     import tiddlywebplugins.register
     import tiddlywebplugins.wimporter
     import tiddlywebplugins.logout
+    import tiddlywebplugins.form
     tiddlywebwiki.init(config)
     tiddlywebplugins.register.init(config)
     tiddlywebplugins.wimporter.init(config)
     tiddlywebplugins.logout.init(config)
+    tiddlywebplugins.form.init(config)
     
     # XXX this clobbers?
     config['instance_tiddlers'] = instance_tiddlers
@@ -57,6 +59,7 @@ def init(config):
     if 'selector' in config:
         replace_handler(config['selector'], '/', dict(GET=front))
         config['selector'].add('/help', GET=help_page)
+        config['selector'].add('/uploader', GET=uploader)
         config['selector'].add('/formeditor', GET=get_tiddler_edit,
                 POST=post_tiddler_edit)
         config['selector'].add('/addemail', POST=add_email)
@@ -423,8 +426,22 @@ def user_page(environ, start_response):
     return send_template(environ, 'profile.html', data)
 
 @do_html()
-def editor(environ, start_response):
-    return send_template(environ, 'editor.html')
+def uploader(environ, start_response):
+    usersign = environ['tiddlyweb.usersign']
+    store = environ['tiddlyweb.store']
+    bag_name = environ['tiddlyweb.query'].get('bag', [''])[0]
+    username = usersign['name']
+    if not 'MEMBER' in usersign['roles']:
+        raise HTTP404('bad edit')
+    try:
+        bag = Bag(bag_name)
+        bag = store.get(bag)
+        bag.policy.allows(usersign, 'write')
+    except NoBagError:
+        raise HTTP404('bad edit')
+    data = {}
+    data['bag'] = bag_name
+    return send_template(environ, 'uploader.html', data)
 
 
 @do_html()
