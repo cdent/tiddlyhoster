@@ -4,20 +4,14 @@ Send a template.
 
 
 from tiddlyweb import __version__ as VERSION
-from tiddlyweb.web.util import http_date_from_timestamp
 from tiddlywebplugins.templates import get_template
 from tiddlywebplugins.hoster.data import get_user_object
-
-
-def format_modified(modified_string):
-    return http_date_from_timestamp(modified_string)
 
 
 def send_template(environ, template_name, template_data=None):
     if template_data == None:
         template_data = {}
     template = get_template(environ, template_name)
-    template.environment.filters['format_modified'] = format_modified
     server_prefix = environ['tiddlyweb.config']['server_prefix']
     user = get_user_object(environ)
     template_defaults = {
