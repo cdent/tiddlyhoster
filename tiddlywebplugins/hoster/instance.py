@@ -24,11 +24,12 @@ store_contents['hoster'] = ['file:basecontent/main.css.tid',
         'file:basecontent/ui-icons_888888_256x240.png.tid',
         'file:basecontent/ui-icons_cd0a0a_256x240.png.tid',
         'file:basecontent/ui.css.tid',
-        'file:basecontent/cat.jpg',
+        'file:basecontent/cat.png',
         'file:basecontent/pencil.png',
         'file:basecontent/delete.png',
         'file:basecontent/credits.tid',
         'file:basecontent/picture_add.png',
+        'file:basecontent/cats.jpg',
         ]
 
 #store_contents['commentsystem'] = ['file:basecontent/ViewTemplate.tid',
