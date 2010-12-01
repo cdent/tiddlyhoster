@@ -34,7 +34,11 @@
 
 <div id="description">
     <strong>Description:</strong>
+    {% if bag.desc %}
     <span id="bagdesc">{{ bag.desc }}</span>
+    {% else %}
+    <span id="bagdesc">No Description</span>
+    {% endif %}
 </div>
 
 {% if delete %}
