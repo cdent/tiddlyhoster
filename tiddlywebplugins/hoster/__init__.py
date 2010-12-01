@@ -59,6 +59,7 @@ def init(config):
     if 'selector' in config:
         replace_handler(config['selector'], '/', dict(GET=front))
         config['selector'].add('/help', GET=help_page)
+        config['selector'].add('/login', GET=login)
         config['selector'].add('/uploader', GET=uploader)
         config['selector'].add('/formeditor', GET=get_tiddler_edit,
                 POST=post_tiddler_edit)
@@ -97,6 +98,14 @@ def init(config):
             from tiddlyweb.config import config
             instance = Instance('.', config)
             instance._init_store(store_structure)
+
+
+@do_html()
+def login(environ, start_response):
+    user = environ['tiddlyweb.usersign']
+    if user['name'] != 'GUEST' and 'MEMBER' in user['roles']:
+        raise HTTP302(server_base_url(environ) + '/' + encode_name(user['name']))
+    return send_template(environ, 'login.html')
 
 
 @do_html()

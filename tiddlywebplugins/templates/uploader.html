@@ -1,0 +1,9 @@
+{% extends "hosterbase.html" %}
+{% block body %}
+<form action="{{ server_prefix }}/bags/{{ bag }}/tiddlers?redirect={{ server_prefix }}/bags/{{ bag|uri }}/tiddlers"
+    method="POST" enctype="multipart/form-data">
+    Title: <input type="text" name="title" ><br />
+    <input type="file" name="file"><br />
+    <input type="submit" value="Upload">
+</form>
+{% endblock %}

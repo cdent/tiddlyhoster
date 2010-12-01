@@ -25,7 +25,7 @@ def send_template(environ, template_name, template_data=None):
                 'title': 'homepage',
                 },
             'login': {
-                'link': '%s/challenge' % server_prefix,
+                'link': '%s/login' % server_prefix,
                 'title': 'Login',
                 },
             'help': {

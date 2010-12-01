@@ -81,7 +81,7 @@
 <h3>Tiddlers
 {% if policy %}
 <a href="{{ server_prefix }}/formeditor?bag={{ bag.name }}">✚</a>
-<a href="{{ server_prefix }}/uploader?bag={{ bag.name|uri }}"><img 
+<a href="{{ server_prefix }}/uploader?bag={{ bag.name|uri }}" title="Upload Binary"><img 
     src="{{ server_prefix }}/bags/hoster/tiddlers/picture_add.png"
     alt="Upload Binary" /></a>
 {% endif %}
@@ -93,7 +93,9 @@
     tiddler.title|uri }}">{{ tiddler.title }}</a>
 <span class="modified">{{tiddler.modified|format_modified}}</span>,
 <span class="modifier"><a href="{{ server_prefix }}/{{ tiddler.modifier|uri }}">{{tiddler.modifier}}</a></span>
+{% if policy %}
 <a href="{{ server_prefix }}/formeditor?title={{ tiddler.title|uri }};bag={{ tiddler.bag|uri }}"><img src="{{ server_prefix }}/bags/hoster/tiddlers/pencil.png" alt="edit tiddler" /></a>
+{% endif %}
 </li>
 {% endfor %}
 </ul>
