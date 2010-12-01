@@ -8,14 +8,19 @@
     name="bag"
     size="60"
     value="{{ user.name }}-{{ timestamp }}">
-    <input type="radio" name="publicity" value="public" />Public?
-    <input type="radio" name="publicity" value="protected" />Protected?
-    <input type="radio" checked="1" name="publicity" value="private" />Private?
+    <input type="radio" name="publicity" value="public" /><abbr
+        title="Anyone can access and edit">Public?</abbr>
+    <input type="radio" name="publicity" value="protected" /><abbr
+        title="Members can access, you can edit.">Protected?</abbr>
+    <input type="radio" checked="1" name="publicity" value="private"
+    /><abbr title="Only you can access and edit">Private?</abbr>
     </p>
     <p>Description: <input
     name="description"
     size="120" /></p>
     <p><input type="submit" value="accept" /></p>
 </form>
-
+<p>A bag is a container for a collection of tiddlers. You can use them to
+group tiddlers into logical partitions of topic or functionality. Each bag
+gets a policy which controls who can read or edit the tiddlers in the bag.</p>
 {% endblock %}

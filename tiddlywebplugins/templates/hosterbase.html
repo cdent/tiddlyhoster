@@ -6,7 +6,7 @@
     {% block head %}
         <link rel="stylesheet"
             href="{{ server_prefix }}/bags/hoster/tiddlers/{{ main_css}}"
-        type="text/css" />
+            type="text/css" />
         <link rel="stylesheet"
             href="/bags/hoster/tiddlers/ui.css"
             type="text/css" />
@@ -16,25 +16,31 @@
     {% endblock %}
     </head>
     <body>
-        <div>
+        <div id="page">
         {% block header %}
             <div id='header' class="wide">
                 <ul>
                     {% if user.name != "GUEST" %}
-                    <li>User: <a
-                        href="{{ userpage.link }}">{{ user.pretty_name }}</a></li>
-                    {% endif %}
-                    <li><a href="{{ server_prefix }}/">TiddlyHoster</a></li>
+                    <li><a
+                        href="{{ userpage.link }}">
+                        <img src="{{ server_prefix}}/bags/hoster/tiddlers/cat.jpg"
+                        alt="Home" /></a></li>
                     <li><a href="{{ server_prefix
                         }}/members">Members</a></li>
+                    {% else %}
+                    <li><a href="{{ server_prefix }}/">
+                        <img src="{{ server_prefix}}/bags/hoster/tiddlers/cat.jpg"
+                        alt="Home" /></a></li>
+                    <li><a href="{{ login.link }}">{{ login.title }}</a></li>
+                    {% endif %}
                     <li><a href="{{ help.link }}">{{ help.title }}</a></li>
                     <li><a
-                        href="http://github.com/cdent/tiddlyhoster/issues">Bugs</a></li>
+                        href="http://github.com/cdent/tiddlyhoster/issues">Issues</a></li>
+                    {% if user.name != "GUEST" %}
                     <li><a
                         href="{{ server_prefix }}/feedbag?sort=-modified;limit=20">Feedbag</a></li>
-                    {% if user.name != "GUEST" %}
-                    <li><form action="{{ server_prefix }}/logout"
-                        method="POST"><input type="submit" value="logout" />
+                    <li><form action="{{ server_prefix }}/logout" method="POST">
+                        <input type="submit" value="logout" />
                     </form></li>
                     {% endif %}
                 </ul>
@@ -43,8 +49,7 @@
                 {{ message }}
             </div>
         {% endblock %}
-        </div>
-        <div id='body'>
+        <div id='content'>
         {% block body %}
         {% endblock %}
         </div>
@@ -54,15 +59,13 @@
                 <li><a href="http://peermore.com/"><img
                     src="http://peermore.com/images/peermore100.png"
                     alt="peermore" /></a></li>
-                <li><a href="http://www.osmosoft.com/"><img
-                    src="http://www.osmosoft.com/images/logo.png"
-                    width="100"
-                    alt="osmosoft" /></a></li>
-                <li>Hi I'm Part of the Footer</li>
-                <li>This is <a href="http://tiddlyweb.com/">TiddlyWeb</a>
+                <li>This is TiddlyHoster on <a href="http://tiddlyweb.com/">TiddlyWeb</a>
                 {{ version }}</li>
+                <li><a href="{{ server_prefix
+                    }}/bags/hoster/tiddlers/credits">Credits</a></li>
             </ul>
         {% endblock %}
         </div>
+    </div>
     </body>
 </html>

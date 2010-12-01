@@ -9,7 +9,6 @@ store_contents['hoster'] = ['file:basecontent/main.css.tid',
         'file:basecontent/recipemanage.js.tid',
         'file:basecontent/templater.js.tid',
         'file:basecontent/bagdesc.js.tid',
-        'file:basecontent/delete.gif.tid',
         'file:basecontent/json2.js.tid',
         'file:basecontent/ui-bg_flat_0_aaaaaa_40x100.png.tid',
         'file:basecontent/ui-bg_flat_75_ffffff_40x100.png.tid',
@@ -25,11 +24,16 @@ store_contents['hoster'] = ['file:basecontent/main.css.tid',
         'file:basecontent/ui-icons_888888_256x240.png.tid',
         'file:basecontent/ui-icons_cd0a0a_256x240.png.tid',
         'file:basecontent/ui.css.tid',
+        'file:basecontent/cat.jpg',
+        'file:basecontent/pencil.png',
+        'file:basecontent/delete.png',
+        'file:basecontent/credits.tid',
+        'file:basecontent/picture_add.png',
         ]
 
-store_contents['commentsystem'] = ['file:basecontent/ViewTemplate.tid',
-        'http://svn.tiddlywiki.org/Trunk/contributors/MichaelMahemoff/plugins/CommentsPlugin/CommentsPlugin.js',
-        ]
+#store_contents['commentsystem'] = ['file:basecontent/ViewTemplate.tid',
+#        'http://svn.tiddlywiki.org/Trunk/contributors/MichaelMahemoff/plugins/CommentsPlugin/CommentsPlugin.js',
+#        ]
 
 store_contents['help'] = ['file:basecontent/WorkspaceConfig.tid']
 
@@ -57,17 +61,17 @@ store_structure['bags']['helpcomments'] = {
             }
         }
 
-store_structure['bags']['commentsystem'] = {
-        'desc': 'comments mgt tools',
-        'policy': {
-            'read': [],
-            'write': ['R:ADMIN'],
-            'create': ['R:ADMIN'],
-            'delete': ['R:ADMIN'],
-            'manage': ['R:ADMIN'],
-            'owner': 'administrator',
-            }
-        }
+# store_structure['bags']['commentsystem'] = {
+#         'desc': 'comments mgt tools',
+#         'policy': {
+#             'read': [],
+#             'write': ['R:ADMIN'],
+#             'create': ['R:ADMIN'],
+#             'delete': ['R:ADMIN'],
+#             'manage': ['R:ADMIN'],
+#             'owner': 'administrator',
+#             }
+#         }
 
 store_structure['bags']['help'] = {
         'desc': 'help documentation',

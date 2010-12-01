@@ -34,7 +34,11 @@
 
 <div id="description">
     <strong>Description:</strong>
+    {% if bag.desc %}
     <span id="bagdesc">{{ bag.desc }}</span>
+    {% else %}
+    <span id="bagdesc">No Description</span>
+    {% endif %}
 </div>
 
 {% if delete %}
@@ -78,10 +82,25 @@
     {{ representations }}
 </div>
 
-<ul>
+<h3>Tiddlers
+{% if policy %}
+<a href="{{ server_prefix }}/formeditor?bag={{ bag.name }}">✚</a>
+<a href="{{ server_prefix }}/uploader?bag={{ bag.name|uri }}" title="Upload Binary"><img 
+    src="{{ server_prefix }}/bags/hoster/tiddlers/picture_add.png"
+    alt="Upload Binary" /></a>
+{% endif %}
+</h3>
+<ul class="entitylist">
 {% for tiddler in tiddlers %}
 <li class="listedtiddler"><a
-    href="{{ server_prefix }}/bags/{{ tiddler.bag|uri }}/tiddlers/{{ tiddler.title|uri }}">{{ tiddler.title }}</a></li>
+    href="{{ server_prefix }}/bags/{{ tiddler.bag|uri }}/tiddlers/{{
+    tiddler.title|uri }}">{{ tiddler.title }}</a>
+<span class="modified">{{tiddler.modified|format_modified}}</span>,
+<span class="modifier"><a href="{{ server_prefix }}/{{ tiddler.modifier|uri }}">{{tiddler.modifier}}</a></span>
+{% if policy %}
+<a href="{{ server_prefix }}/formeditor?title={{ tiddler.title|uri }};bag={{ tiddler.bag|uri }}"><img src="{{ server_prefix }}/bags/hoster/tiddlers/pencil.png" alt="edit tiddler" /></a>
+{% endif %}
+</li>
 {% endfor %}
 </ul>
 {% endblock %}

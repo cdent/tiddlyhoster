@@ -1,13 +1,14 @@
 {% extends "hosterbase.html" %}
 {% block body %}
-<h1>Add a New Wiki</h1>
+<h1>Add a New Recipe</h1>
 
 <form action="{{ server_prefix }}/createrecipe" method="POST">
     <p>Recipe Name: <input
     name="recipe"
     size="60"
     value="{{ user.name }}-{{ timestamp }}"> <input type="checkbox"
-    name="publicity" value="private" />Private?</p>
+    name="publicity" value="private" />
+    <abbr title="Only you can access">Private?</abbr></p>
     <p>Description: <input
     name="description"
     size="120" /></p>
@@ -23,5 +24,7 @@
         private. You can (eventually) add more bags later.</em></p>
     <p><input type="submit" value="accept" /></p>
 </form>
-
+<p>A recipe is used to assemble a set of bags for a particular purpose.
+Individual bags contain the various pieces of content required for that 
+purpose.</p>
 {% endblock %}

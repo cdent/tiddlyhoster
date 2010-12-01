@@ -54,7 +54,6 @@ def get_favorited_bags(store, username):
     for favorite in favorites:
         try:
             bag = Bag(favorite)
-            bag.skinny = True
             bags.append(store.get(bag))
         except NoBagError:
             pass # don't care if it doesn't exist
@@ -126,8 +125,6 @@ def get_stuff(store, entities, user, owner=None):
     """
     kept_entities = []
     for entity in entities:
-        if hasattr(entity, 'skinny'):
-            entity.skinny = True
         entity = store.get(entity)
         try:
             entity.policy.allows(user, 'read')
@@ -242,7 +239,6 @@ def first_time_check(environ, user):
     store = environ['tiddlyweb.store']
     try:
         bag = Bag(username)
-        bag.skinny = True
         store.get(bag)
     except NoBagError:
         ensure_public_bag(store, username)

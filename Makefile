@@ -5,6 +5,7 @@
 
 clean: cleanlinks
 	find . -name "*.pyc" |xargs rm || true
+	rm -r homestead || true
 	rm -r dist || true
 	rm -r build || true
 	rm -r *.egg-info || true
@@ -26,10 +27,13 @@ upload: clean pypi
 pypi: test
 	python setup.py sdist upload
 
-devlinks:
-	ln -sf ~/src/tiddlyweb-plugins/logout/logout.py .
-	ln -sf ~/src/tiddlyweb-plugins/twedit/twedit.py .
-	ln -sf ./tiddlywebplugins/templates .
+dev: contents
+	./betsy homestead
+	(cd homestead &&  ln -s ../tiddlywebplugins . && \
+	    ln -s ../tiddlywebplugins/templates . && \
+	    ln -s ../mangler.py . && \
+	    ln -s ../refresh . && \
+	echo "import mangler" >> tiddlywebconfig.py)
 
 cleanlinks:
 	rm logout.py twedit.py templates || true
