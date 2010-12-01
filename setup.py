@@ -35,10 +35,7 @@ setup(
             'tiddlywebplugins.instancer>=0.3.2',
             'tiddlywebplugins.openid2',
             'tiddlywebplugins.logout',
-<<<<<<< HEAD:setup.py
-=======
             'tiddlywebplugins.form',
->>>>>>> a0bcb2795d0b6a3fef6e189dc8dfa1e9ecf62402:setup.py
             ],
         include_package_data = True,
         zip_safe = False,
