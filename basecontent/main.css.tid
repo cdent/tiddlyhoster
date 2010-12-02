@@ -51,6 +51,12 @@ div#header {
     border-left: thin solid black;
 }
 
+.profilecontent {
+    padding-bottom: .5em;
+    margin-bottom: .5em;
+    border-bottom: thin solid black;
+}
+
 .newbag {
     background: green;
 }

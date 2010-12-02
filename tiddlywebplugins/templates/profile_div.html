@@ -2,12 +2,19 @@
     <div class="gravatar"><img
     src="http://www.gravatar.com/avatar/{{ email_md5 }}.png" alt="gravatar">
     </div>
+    <div class="profilecontent">
     {{ profile }}
+    </div>
     {% if home == user.name %}
     <div><form action="{{ server_prefix }}/formeditor"><input type="submit"
-            name="edit" value="edit profile"/></form></div>
-    <div><form action="{{ server_prefix }}/addemail" method="POST"><input name="email"
-        size="40" value="{{ email }}"/><input type="submit" value="set email"
-        /></form></div>
+            name="edit" value="Edit profile"/> to say a bit about
+            yourself.</form></div>
+    <div><form action="{{ server_prefix }}/addemail" method="POST">
+            {% if email %}
+            <input name="email" size="40" value="{{ email }}"/><br />
+            {% else %}
+            <input name="email" size="40" value="email"/><br />
+            {% endif %}
+            <input type="submit" value="Set email" /> to set gravatar.</form></div>
     {% endif %}
 </div>

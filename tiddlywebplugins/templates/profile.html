@@ -32,7 +32,7 @@
 {% endif %}
 <h1><abbr title="A recipe is an ordered list of bags and filters that generates a list of tiddlers for some purpose.">Recipes</abbr>
 {% if home == user.name %}
-<a href="{{ server_prefix }}/createrecipe">✚</a>
+<a href="{{ server_prefix }}/createrecipe" title="Add a recipe">✚</a>
 {% endif %}
 </h1>
 <ul class="entitylist">
@@ -46,8 +46,8 @@
 </ul>
 <h1><abbr title="A bag is a collection of uniquely named tiddlers grouped for purpose and access control">Bags</abbr>
 {% if home == user.name %}
-<a href="{{ server_prefix }}/createbag">✚</a>
-<a href="{{ server_prefix }}/import">➥</a>
+<a href="{{ server_prefix }}/createbag" title="Add a bag">✚</a>
+<a href="{{ server_prefix }}/import" title="Import tiddlers to a bag">➥</a>
 {% endif %}
 </h1>
 <ul class="entitylist">
