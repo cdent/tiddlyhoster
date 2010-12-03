@@ -13,7 +13,7 @@ html,body {
     font-size: 90%;
 }
 
-abbr {
+dfn {
     border-bottom: thin dotted #666;
 }
 

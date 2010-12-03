@@ -5,7 +5,7 @@
     <input type="hidden" name="name" value="{{ home }}" />
 </form></p>
 {% endif %}
-<abbr title="Users getting attention.">Following:</abbr>
+<dfn title="Users getting attention.">Following:</dfn>
 <ul class="entitylist">
 {% for name, md5 in friends %}
 <li><a class="draggable deleteable user" href="{{ server_prefix }}/{{ name|uri }}" title="{{ name }}">
@@ -13,7 +13,7 @@
     alt="{{ name }}" />{{ name }}</a></li>
 {% endfor %}
 </ul>
-<abbr title="Bags getting attention.">Favorites:</abbr>
+<dfn title="Bags getting attention.">Favorites:</dfn>
 <ul class="entitylist">
 {% for bag in favorites %}
 <li><a class="draggable deleteable bag" href="{{ server_prefix }}/bags/{{ bag.name|uri }}/tiddlers">{{ bag.name }}</a>
@@ -23,7 +23,7 @@
     alt="feed" /></a></li>
 {% endfor %}
 </ul>
-<abbr title="Useful recipes.">Bookmarks:</abbr>
+<dfn title="Useful recipes.">Bookmarks:</dfn>
 <ul class="entitylist">
 {% for recipe in bookmarks %}
 <li><a class="recipe deleteable" href="{{ server_prefix }}/recipes/{{ recipe.name|uri }}/tiddlers">{{ recipe.name }}</a>

@@ -30,7 +30,7 @@
 {% else %}
 <p>Here's {{ home }}'s stuff.</p>
 {% endif %}
-<h1><abbr title="A recipe is an ordered list of bags and filters that generates a list of tiddlers for some purpose.">Recipes</abbr>
+<h1><dfn title="A recipe is an ordered list of bags and filters that generates a list of tiddlers for some purpose.">Recipes</dfn>
 {% if home == user.name %}
 <a href="{{ server_prefix }}/createrecipe" title="Add a recipe">✚</a>
 {% endif %}
@@ -44,7 +44,7 @@
     alt="feed" /></a></li>
 {% endfor %}
 </ul>
-<h1><abbr title="A bag is a collection of uniquely named tiddlers grouped for purpose and access control">Bags</abbr>
+<h1><dfn title="A bag is a collection of uniquely named tiddlers grouped for purpose and access control">Bags</dfn>
 {% if home == user.name %}
 <a href="{{ server_prefix }}/createbag" title="Add a bag">✚</a>
 <a href="{{ server_prefix }}/import" title="Import tiddlers to a bag">➥</a>
