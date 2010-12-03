@@ -19,7 +19,6 @@ var deleteURI = function(uri, entity) {
 
 $(function() {
     $(".deletebutton").click( function() {
-            console.log('got click', $(this));
             var entity = $(this).next();
             var entity_uri = entity.attr('href');
             deleteURI(entity_uri, entity);
