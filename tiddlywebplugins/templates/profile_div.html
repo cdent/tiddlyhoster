@@ -17,4 +17,10 @@
             {% endif %}
             <input type="submit" value="Set email" /> to set gravatar.</form></div>
     {% endif %}
+    <div class="notifier">
+        <h3>Latest Notification
+    <span
+        class="modified">{{notice.modified|format_modified}}</span></h3>
+    {{ notice.html }}
+    </div>
 </div>

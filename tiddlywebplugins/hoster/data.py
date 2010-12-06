@@ -5,8 +5,10 @@ Just as a way of extracting some stuff to another file,
 for now.
 """
 
+from tiddlyweb.control import filter_tiddlers
 from tiddlyweb.model.tiddler import Tiddler
-from tiddlyweb.store import NoTiddlerError, NoBagError, NoRecipeError
+from tiddlyweb.store import (StoreError, NoTiddlerError, NoBagError,
+        NoRecipeError)
 from tiddlyweb.model.policy import UserRequiredError, ForbiddenError, Policy
 from tiddlyweb.model.user import User
 from tiddlyweb.model.recipe import Recipe
@@ -103,6 +105,18 @@ def get_email_tiddler(store, userpage):
     except NoTiddlerError:
         tiddler.text = ''
     return tiddler.text
+
+
+def get_notice(environ):
+    store = environ['tiddlyweb.store']
+    try:
+        tiddlers = filter_tiddlers(store.list_bag_tiddlers(Bag('notifications')),
+                'sort=-modified;limit=1', environ=environ)
+        tiddler = store.get(tiddlers.next())
+    except (StopIteration, StoreError):
+        tiddler = Tiddler('profile')
+        tiddler.text = "''No Current Notifications''.\n"
+    return tiddler
 
 
 def get_profile(store, user, userpage):

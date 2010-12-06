@@ -34,7 +34,7 @@ from tiddlywebplugins.hoster.template import send_template
 from tiddlywebplugins.hoster.data import (
         get_stuff, get_user_object, get_member_names, first_time_check,
         get_friends, get_followers, get_email_tiddler, get_profile,
-        ensure_public_recipe, ensure_private_recipe,
+        ensure_public_recipe, ensure_private_recipe, get_notice,
         ensure_public_bag, ensure_protected_bag, ensure_user_bag,
         ensure_private_bag, get_bookmarked_recipes,
         get_favorited_bags, get_favorites, get_bookmarks,
@@ -411,6 +411,8 @@ def user_page(environ, start_response):
 
     profile_tiddler = get_profile(store, user, userpage)
     profile_html = render_wikitext(profile_tiddler, environ)
+    notice_tiddler = get_notice(environ)
+    notice_html = render_wikitext(notice_tiddler, environ)
     kept_recipes = get_stuff(store, store.list_recipes(), user, userpage)
     kept_bags = get_stuff(store, store.list_bags(), user, userpage)
     kept_favorites = get_stuff(store, get_favorited_bags(store, userpage),
@@ -427,6 +429,8 @@ def user_page(environ, start_response):
             'bookmarks': kept_bookmarks,
             'home': userpage,
             'profile': profile_html,
+            'notice': {'html': notice_html,
+                'modified': notice_tiddler.modified},
             'title': userpage,
             'email': email,
             'email_md5': email_md5,

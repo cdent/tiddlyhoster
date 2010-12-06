@@ -172,3 +172,9 @@ div#footer {
 .modifier a {
     text-decoration: none;
 }
+
+.notifier {
+    border-top: thin solid black;
+    padding-top: .5em;
+    margin-top: .5em;
+}

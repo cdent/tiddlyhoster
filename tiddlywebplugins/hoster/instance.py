@@ -38,6 +38,18 @@ store_contents['hoster'] = ['file:basecontent/main.css.tid',
 
 store_contents['help'] = ['file:basecontent/WorkspaceConfig.tid']
 
+store_structure['bags']['notifications'] = {
+        'desc': 'Latest notifications from the system.',
+        'policy': {
+            'read': [],
+            'write': ['R:ADMIN'],
+            'create': ['R:ADMIN'],
+            'delete': ['R:ADMIN'],
+            'manage': ['R:ADMIN'],
+            'owner': 'administrator',
+            }
+        }
+
 store_structure['bags']['hoster'] = {
         'desc': 'useful stuff that hoster wants to use',
         'policy': {
