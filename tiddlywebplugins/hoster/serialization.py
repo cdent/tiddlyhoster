@@ -24,7 +24,7 @@ class Serialization(HTMLSerialization):
         editing interface. Otherwise we use the parent serialization.
         """
         if (self.environ['wsgiorg.routing_args'][1].get('tiddler_name')):
-            return HTMLSerialization.list_tiddlers(self, bag)
+            return HTMLSerialization.list_tiddlers(self, tiddlers)
 
         try:
             name = self.environ['wsgiorg.routing_args'][1]['bag_name']
