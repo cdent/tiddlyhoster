@@ -88,7 +88,6 @@ def init(config):
 
         new_serializer = ['tiddlywebplugins.hoster.serialization', 'text/html; charset=UTF-8']
         config['serializers']['text/html'] = new_serializer
-        config['serializers']['default'] = new_serializer
     else:
         @make_command()
         def upstore(args):
