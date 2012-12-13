@@ -9,7 +9,7 @@ import os
 from setuptools import setup, find_packages
 
 # update in __init__ too please
-VERSION = '0.9.36'
+VERSION = '0.9.37'
 
 
 setup(
@@ -26,7 +26,7 @@ setup(
         author_email = AUTHOR_EMAIL,
         platforms = 'Posix; MacOS X; Windows',
         install_requires = ['setuptools',
-            'tiddlyweb>=1.2.0',
+            'tiddlyweb>=1.3.0',
             'tiddlywebplugins.utils',
             'tiddlywebplugins.templates>=0.8',
             'tiddlywebwiki',
@@ -36,6 +36,7 @@ setup(
             'tiddlywebplugins.openid2',
             'tiddlywebplugins.logout',
             'tiddlywebplugins.form',
+            'httpexceptor',
             ],
         include_package_data = True,
         zip_safe = False,

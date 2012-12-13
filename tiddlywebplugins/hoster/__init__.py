@@ -2,13 +2,14 @@
 Host customizable TiddlyWikis on TiddlyWeb.
 """
 
-__version__ = '0.9.36'
+__version__ = '0.9.37'
 
 import Cookie
 import time
 import urllib
 
 from hashlib import md5
+from httpexceptor import HTTP302, HTTP303, HTTP404, HTTP400
 
 from tiddlyweb.model.policy import UserRequiredError, ForbiddenError
 from tiddlyweb.model.user import User
@@ -19,7 +20,6 @@ from tiddlyweb.model.recipe import Recipe
 from tiddlyweb.model.tiddler import Tiddler
 from tiddlyweb.store import (NoBagError, NoTiddlerError,
         NoUserError, NoRecipeError, StoreError)
-from tiddlyweb.web.http import HTTP302, HTTP303, HTTP404, HTTP400
 from tiddlyweb.web.util import (server_base_url, encode_name,
         bag_url, recipe_url, tiddler_url)
 from tiddlyweb.web.wsgi import HTMLPresenter
