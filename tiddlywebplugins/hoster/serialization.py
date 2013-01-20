@@ -17,6 +17,32 @@ from tiddlywebplugins.hoster.template import send_template
 from tiddlywebplugins.hoster.data import determine_publicity, get_user_object
 
 class Serialization(HTMLSerialization):
+    """
+    Customize the output for hoster. When listing tiddlers,
+    do a lot of interesting stuff. Otherwise wrap the
+    HTML into a template: pretty.html.
+    """
+
+    def _footer(self):
+        return ''
+
+    def _header(self):
+        return ''
+
+    def _templatize(self, output):
+        if isinstance(output, basestring):
+            output = [output]
+        data = {
+                'output': output,
+                'title': self.environ['tiddlyweb.title'],
+        }
+        return send_template(self.environ, 'pretty.html', data)
+
+    def list_recipes(self, recipes):
+        return self._templatize(HTMLSerialization.list_recipes(self, recipes))
+
+    def list_bags(self, bags):
+        return self._templatize(HTMLSerialization.list_bags(self, bags))
 
     def list_tiddlers(self, tiddlers):
         """
@@ -37,6 +63,15 @@ class Serialization(HTMLSerialization):
                 return self._recipe_list(tiddlers, name)
             except KeyError:
                 return self._bag_list(tiddlers)
+
+    def recipe_as(self, recipe):
+        return self._templatize(HTMLSerialization.recipe_as(self, recipe))
+
+    def bag_as(self, bag):
+        return self._templatize(HTMLSerialization.bag_as(self, bag))
+
+    def tiddler_as(self, tiddler):
+        return self._templatize(HTMLSerialization.tiddler_as(self, tiddler))
 
     def _recipe_list(self, tiddlers, recipe_name):
         representation_link = '%s/recipes/%s/tiddlers' % (
@@ -63,7 +98,6 @@ class Serialization(HTMLSerialization):
                 'recipe': recipe, 'tiddlers': tiddlers, 'representations': representations}
         del self.environ['tiddlyweb.title']
         return send_template(self.environ, 'recipelist.html', data)
-
 
     def _bag_list(self, tiddlers):
         if '/feedbag' in self.environ['selector.matches'][0]:

@@ -22,11 +22,9 @@ from tiddlyweb.store import (NoBagError, NoTiddlerError,
         NoUserError, NoRecipeError, StoreError)
 from tiddlyweb.web.util import (server_base_url, encode_name,
         bag_url, recipe_url, tiddler_url)
-from tiddlyweb.web.wsgi import HTMLPresenter
 from tiddlywebplugins.utils import replace_handler, do_html, require_role
 from tiddlyweb.wikitext import render_wikitext
 from tiddlywebplugins.hoster.instance import instance_tiddlers
-from tiddlyweb.serializations.html import Serialization as HTMLSerialization
 from tiddlyweb.manage import make_command
 from tiddlyweb.web.sendtiddlers import send_tiddlers
 
@@ -39,7 +37,6 @@ from tiddlywebplugins.hoster.data import (
         ensure_private_bag, get_bookmarked_recipes,
         get_favorited_bags, get_favorites, get_bookmarks,
         public_policy, protected_policy, private_policy)
-from tiddlywebplugins.hoster.presenter import PrettyPresenter
 
 def init(config):
     import tiddlywebwiki
@@ -79,8 +76,6 @@ def init(config):
         # THE FOLLOWING MUST COME LAST
         config['selector'].add('/{userpage:segment}', GET=user_page)
 
-        presenter_index = config['server_response_filters'].index(HTMLPresenter)
-        config['server_response_filters'][presenter_index] = PrettyPresenter
         # XXX: disable the specialized extractor for now. The roles it
         # adds are not used (yet).
         #simple_cookie_index = config['extractors'].index('simple_cookie')
@@ -301,6 +296,7 @@ def recipe_favor(environ, start_response):
     except NoTiddlerError:
         pass # is okay if tiddler doesn't exist yet
     tiddler.text = '\n'.join(bookmarks)
+    tiddler.modifier = user['name']
     store.put(tiddler)
     raise HTTP303('%s/home' % server_base_url(environ))
 
@@ -321,6 +317,7 @@ def bag_favor(environ, start_response):
     except NoTiddlerError:
         pass # is okay if tiddler doesn't exist yet
     tiddler.text = '\n'.join(favorites)
+    tiddler.modifier = user['name']
     store.put(tiddler)
     raise HTTP303('%s/home' % server_base_url(environ))
 
@@ -340,6 +337,7 @@ def add_friend(environ, start_response):
     except NoTiddlerError:
         pass # is okay if tiddler doesn't exist yet
     tiddler.text = '\n'.join(friends)
+    tiddler.modifier = user['name']
     store.put(tiddler)
     raise HTTP303('%s/home' % server_base_url(environ))
 
@@ -351,6 +349,7 @@ def add_email(environ, start_response):
     tiddler = Tiddler('email', user['name'])
     email = environ['tiddlyweb.query'].get('email', [''])[0]
     tiddler.text = email
+    tiddler.modifier = user['name']
     store.put(tiddler)
     raise HTTP303('%s/home' % server_base_url(environ))
 
