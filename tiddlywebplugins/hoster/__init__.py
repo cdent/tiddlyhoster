@@ -4,7 +4,6 @@ Host customizable TiddlyWikis on TiddlyWeb.
 
 __version__ = '0.9.40'
 
-import Cookie
 import time
 import urllib
 
@@ -15,7 +14,6 @@ from tiddlyweb.model.policy import UserRequiredError, ForbiddenError
 from tiddlyweb.model.user import User
 from tiddlyweb.model.bag import Bag
 from tiddlyweb.model.collections import Tiddlers
-from tiddlyweb.model.policy import Policy
 from tiddlyweb.model.recipe import Recipe
 from tiddlyweb.model.tiddler import Tiddler
 from tiddlyweb.store import (NoBagError, NoTiddlerError,
@@ -33,12 +31,12 @@ from tiddlywebplugins.hoster.config import config as hoster_config
 from tiddlywebplugins.hoster.template import send_template
 from tiddlywebplugins.hoster.data import (
         get_stuff, get_user_object, get_member_names, first_time_check,
-        get_friends, get_followers, get_email_tiddler, get_profile,
-        ensure_public_recipe, ensure_private_recipe, get_notice,
+        get_friends, get_email_tiddler, get_profile, get_notice,
         ensure_public_bag, ensure_protected_bag, ensure_user_bag,
         ensure_private_bag, get_bookmarked_recipes,
         get_favorited_bags, get_favorites, get_bookmarks,
         public_policy, protected_policy, private_policy)
+
 
 def init(config):
     import tiddlywebwiki
@@ -81,12 +79,8 @@ def init(config):
         # THE FOLLOWING MUST COME LAST
         config['selector'].add('/{userpage:segment}', GET=user_page)
 
-        # XXX: disable the specialized extractor for now. The roles it
-        # adds are not used (yet).
-        #simple_cookie_index = config['extractors'].index('simple_cookie')
-        #config['extractors'][simple_cookie_index] = 'tiddlywebplugins.hoster.extractor'
-
-        new_serializer = ['tiddlywebplugins.hoster.serialization', 'text/html; charset=UTF-8']
+        new_serializer = ['tiddlywebplugins.hoster.serialization',
+                'text/html; charset=UTF-8']
         config['serializers']['text/html'] = new_serializer
     else:
         @make_command()
@@ -103,7 +97,8 @@ def init(config):
 def login(environ, start_response):
     user = environ['tiddlyweb.usersign']
     if user['name'] != 'GUEST' and 'MEMBER' in user['roles']:
-        raise HTTP302(server_base_url(environ) + '/' + encode_name(user['name']))
+        raise HTTP302(server_base_url(environ) + '/'
+                + encode_name(user['name']))
     return send_template(environ, 'login.html')
 
 
@@ -111,7 +106,7 @@ def login(environ, start_response):
 @require_role('MEMBER')
 def get_createbag(environ, start_response):
     return send_template(environ, 'bag.html', {
-        'timestamp': int(time.time()), 'title': 'Create Bag'}) 
+        'timestamp': int(time.time()), 'title': 'Create Bag'})
 
 
 def public_stuff(environ, start_response):
@@ -168,7 +163,7 @@ def post_createbag(environ, start_response):
 @require_role('MEMBER')
 def get_createrecipe(environ, start_response):
     return send_template(environ, 'recipe.html', {
-        'timestamp': int(time.time()), 'title': 'Create Recipe'}) 
+        'timestamp': int(time.time()), 'title': 'Create Recipe'})
 
 
 @require_role('MEMBER')
@@ -212,7 +207,7 @@ def post_createrecipe(environ, start_response):
     recipe.set_recipe([
         ('system', ''),
         (bag.name, ''),
-        ])
+    ])
     store.put(recipe)
 
     raise HTTP303('%s/home' % server_base_url(environ))
@@ -228,7 +223,7 @@ def members_list(environ, start_response):
         email_md5 = md5(email.lower()).hexdigest()
         members.append((member, email_md5))
     return send_template(environ, 'members.html', {
-        'members': members, 'title': 'Members'}) 
+        'members': members, 'title': 'Members'})
 
 
 @require_role('MEMBER')
@@ -299,7 +294,7 @@ def recipe_favor(environ, start_response):
     try:
         tiddler = store.get(tiddler)
     except NoTiddlerError:
-        pass # is okay if tiddler doesn't exist yet
+        pass  # is okay if tiddler doesn't exist yet
     tiddler.text = '\n'.join(bookmarks)
     tiddler.modifier = user['name']
     store.put(tiddler)
@@ -320,7 +315,7 @@ def bag_favor(environ, start_response):
     try:
         tiddler = store.get(tiddler)
     except NoTiddlerError:
-        pass # is okay if tiddler doesn't exist yet
+        pass  # is okay if tiddler doesn't exist yet
     tiddler.text = '\n'.join(favorites)
     tiddler.modifier = user['name']
     store.put(tiddler)
@@ -340,7 +335,7 @@ def add_friend(environ, start_response):
     try:
         tiddler = store.get(tiddler)
     except NoTiddlerError:
-        pass # is okay if tiddler doesn't exist yet
+        pass  # is okay if tiddler doesn't exist yet
     tiddler.text = '\n'.join(friends)
     tiddler.modifier = user['name']
     store.put(tiddler)
@@ -371,8 +366,9 @@ def help_page(environ, start_response):
 def front(environ, start_response):
     user = environ['tiddlyweb.usersign']
     if user['name'] != 'GUEST' and 'MEMBER' in user['roles']:
-        raise HTTP302(server_base_url(environ) + '/' + encode_name(user['name']))
-    return send_template(environ, 'home.html', { 'title': 'Welcome'})
+        raise HTTP302(server_base_url(environ) + '/'
+                + encode_name(user['name']))
+    return send_template(environ, 'home.html', {'title': 'Welcome'})
 
 
 def get_home(environ, start_response):
@@ -380,7 +376,8 @@ def get_home(environ, start_response):
     if user['name'] == 'GUEST' or 'MEMBER' not in user['roles']:
         raise HTTP302(server_base_url(environ) + '/')
     else:
-        raise HTTP302(server_base_url(environ) + '/' + encode_name(user['name']))
+        raise HTTP302(server_base_url(environ) + '/'
+                + encode_name(user['name']))
 
 
 @do_html()
@@ -400,7 +397,7 @@ def user_page(environ, start_response):
         userpage_user = User(userpage)
         userpage_user = store.get(userpage_user)
     except NoUserError:
-        pass # roles will be empty
+        pass  # roles will be empty
     if 'MEMBER' not in userpage_user.list_roles():
         raise HTTP404('%s has no page' % userpage)
 
@@ -441,12 +438,12 @@ def user_page(environ, start_response):
 
     return send_template(environ, 'profile.html', data)
 
+
 @do_html()
 def uploader(environ, start_response):
     usersign = environ['tiddlyweb.usersign']
     store = environ['tiddlyweb.store']
     bag_name = environ['tiddlyweb.query'].get('bag', [''])[0]
-    username = usersign['name']
     if not 'MEMBER' in usersign['roles']:
         raise HTTP404('bad edit')
     try:
@@ -490,7 +487,6 @@ def get_tiddler_edit(environ, start_response):
     bag = Bag(tiddler.bag)
     bag = store.get(bag)
     bag.policy.allows(usersign, 'write')
-
 
     data = {}
     data['tiddler'] = tiddler

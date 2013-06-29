@@ -16,6 +16,7 @@ from tiddlyweb.web.util import encode_name
 from tiddlywebplugins.hoster.template import send_template
 from tiddlywebplugins.hoster.data import determine_publicity, get_user_object
 
+
 class Serialization(HTMLSerialization):
     """
     Customize the output for hoster. When listing tiddlers,
@@ -55,7 +56,7 @@ class Serialization(HTMLSerialization):
         try:
             name = self.environ['wsgiorg.routing_args'][1]['bag_name']
             return self._bag_list(tiddlers)
-        except KeyError: # not a bag link
+        except KeyError:  # not a bag link
             try:
                 name = self.environ['wsgiorg.routing_args'][1]['recipe_name']
                 name = urllib.unquote(name)
@@ -93,9 +94,13 @@ class Serialization(HTMLSerialization):
         except (UserRequiredError, ForbiddenError):
             policy = None
             delete = False
-        data = {'title': 'TiddlyHoster Recipe %s' % recipe.name, 'policy': policy,
-                'publicity': publicity, 'delete': delete,
-                'recipe': recipe, 'tiddlers': tiddlers, 'representations': representations}
+        data = {'title': 'TiddlyHoster Recipe %s' % recipe.name,
+                'policy': policy,
+                'publicity': publicity,
+                'delete': delete,
+                'recipe': recipe,
+                'tiddlers': tiddlers,
+                'representations': representations}
         del self.environ['tiddlyweb.title']
         return send_template(self.environ, 'recipelist.html', data)
 
@@ -127,8 +132,12 @@ class Serialization(HTMLSerialization):
             delete = True
         except (UserRequiredError, ForbiddenError):
             delete = False
-        data = {'title': 'TiddlyHoster Bag %s' % bag.name, 'policy': policy,
-                'publicity': publicity, 'delete': delete,
-                'bag': bag, 'tiddlers': tiddlers, 'representations': representations}
+        data = {'title': 'TiddlyHoster Bag %s' % bag.name,
+                'policy': policy,
+                'publicity': publicity,
+                'delete': delete,
+                'bag': bag,
+                'tiddlers': tiddlers,
+                'representations': representations}
         del self.environ['tiddlyweb.title']
         return send_template(self.environ, 'baglist.html', data)

@@ -3,6 +3,7 @@ from tiddlyweb.web.extractors.simple_cookie import Extractor as SimpleExtractor
 
 from tiddlywebplugins.hoster.data import get_friends, get_followers
 
+
 class Extractor(SimpleExtractor):
 
     def extract(self, environ, start_response):

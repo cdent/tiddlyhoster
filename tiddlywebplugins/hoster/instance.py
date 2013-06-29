@@ -35,8 +35,7 @@ store_contents['hoster'] = ['basecontent/main.css.tid',
         'basecontent/delete.png',
         'basecontent/credits.tid',
         'basecontent/picture_add.png',
-        'basecontent/cats.jpg',
-        ]
+        'basecontent/cats.jpg']
 
 
 store_contents['help'] = ['basecontent/WorkspaceConfig.tid']
@@ -50,8 +49,8 @@ store_structure['bags']['notifications'] = {
             'delete': ['R:ADMIN'],
             'manage': ['R:ADMIN'],
             'owner': 'administrator',
-            }
         }
+}
 
 store_structure['bags']['hoster'] = {
         'desc': 'useful stuff that hoster wants to use',
@@ -62,8 +61,8 @@ store_structure['bags']['hoster'] = {
             'delete': ['R:ADMIN'],
             'manage': ['R:ADMIN'],
             'owner': 'administrator',
-            }
         }
+}
 
 store_structure['bags']['helpcomments'] = {
         'desc': 'target bag for saving comments on help',
@@ -74,8 +73,8 @@ store_structure['bags']['helpcomments'] = {
             'delete': ['R:ADMIN'],
             'manage': ['R:ADMIN'],
             'owner': 'administrator',
-            }
         }
+}
 
 store_structure['bags']['help'] = {
         'desc': 'help documentation',
@@ -86,8 +85,8 @@ store_structure['bags']['help'] = {
             'delete': ['R:ADMIN'],
             'manage': ['R:ADMIN'],
             'owner': 'administrator',
-            }
         }
+}
 
 store_structure['recipes']['hoster'] = {
         'desc': 'useful stuff for the admin to edit',
@@ -95,12 +94,12 @@ store_structure['recipes']['hoster'] = {
             'read': ['R:ADMIN'],
             'manage': ['R:ADMIN'],
             'owner': 'administrator',
-            },
+        },
         'recipe': [
             ('system', ''),
             ('hoster', ''),
-            ],
-        }
+        ],
+}
 
 store_structure['recipes']['help'] = {
         'desc': 'help wiki, with comments',
@@ -108,20 +107,16 @@ store_structure['recipes']['help'] = {
             'read': [],
             'manage': ['R:ADMIN'],
             'owner': 'administrator',
-            },
+        },
         'recipe': [
             ('system', ''),
             ('commentsystem', ''),
             ('help', ''),
             ('helpcomments', ''),
-            ],
-        }
+        ],
+}
 
 instance_config = {
         'system_plugins': ['tiddlywebplugins.hoster'],
         'twanager_plugins': ['tiddlywebplugins.hoster'],
-        'auth_systems': ['tiddlywebplugins.openid2'],
-        'css_uri': '/bags/hoster/tiddlers/main.css',
-        'register.start_href': '/home',
-        'cookie_age': '2592000',
-        }
+}

@@ -16,6 +16,7 @@ from tiddlyweb.model.bag import Bag
 
 from tiddlywebplugins.utils import ensure_bag
 
+
 def get_followers(store, username):
     """
     Get all the users who have username as a friend.
@@ -58,7 +59,7 @@ def get_favorited_bags(store, username):
             bag = Bag(favorite)
             bags.append(store.get(bag))
         except NoBagError:
-            pass # don't care if it doesn't exist
+            pass  # don't care if it doesn't exist
     return bags
 
 
@@ -70,7 +71,7 @@ def get_bookmarked_recipes(store, username):
             recipe = Recipe(bookmark)
             recipes.append(store.get(recipe))
         except NoRecipeError:
-            pass # don't care if it doesn't exist
+            pass  # don't care if it doesn't exist
     return recipes
 
 
@@ -110,8 +111,9 @@ def get_email_tiddler(store, userpage):
 def get_notice(environ):
     store = environ['tiddlyweb.store']
     try:
-        tiddlers = filter_tiddlers(store.list_bag_tiddlers(Bag('notifications')),
-                'sort=-modified;limit=1', environ=environ)
+        tiddlers = filter_tiddlers(store.list_bag_tiddlers(
+            Bag('notifications')), 'sort=-modified;limit=1',
+            environ=environ)
         tiddler = store.get(tiddlers.next())
     except (StopIteration, StoreError):
         tiddler = Tiddler('profile')
@@ -130,6 +132,7 @@ def get_profile(store, user, userpage):
         else:
             tiddler.text = '!!!No profile yet!\n'
     return tiddler
+
 
 def get_stuff(store, entities, user, owner=None):
     """
@@ -168,23 +171,23 @@ def get_user_object(environ):
 
 def determine_publicity(user, policy):
     name = user['name']
-    if (policy.read == [name] and
-        policy.write == [name] and
-        policy.create == [name] and
-        policy.delete == [name] and
-        policy.manage == [name]):
+    if (policy.read == [name]
+            and policy.write == [name]
+            and policy.create == [name]
+            and policy.delete == [name]
+            and policy.manage == [name]):
         return 'private'
-    if (policy.read == [] and
-        policy.write == [name] and
-        policy.create == [name] and
-        policy.delete == [name] and
-        policy.manage == [name]):
+    if (policy.read == []
+            and policy.write == [name]
+            and policy.create == [name]
+            and policy.delete == [name]
+            and policy.manage == [name]):
         return 'protected'
-    if (policy.read == [] and
-        policy.write == [] and
-        policy.create == [] and
-        policy.delete == [] and
-        policy.manage == [name]):
+    if (policy.read == []
+            and policy.write == []
+            and policy.create == []
+            and policy.delete == []
+            and policy.manage == [name]):
         return 'public'
     return 'custom'
 
@@ -200,7 +203,7 @@ def ensure_private_recipe(store, username):
         ('system', ''),
         (pname, ''),
         (name, ''),
-        ])
+    ])
     store.put(recipe)
 
 
@@ -213,25 +216,27 @@ def ensure_public_recipe(store, username):
     recipe.set_recipe([
         ('system', ''),
         (name, ''),
-        ])
+    ])
     store.put(recipe)
 
 
-def ensure_public_bag(store, username, desc='',  name=None):
+def ensure_public_bag(store, username, desc='', name=None):
     policy = _public_policy(username)
-    if name == None:
+    if name is None:
         name = '%s-public' % username
     return ensure_bag(name, store, policy, description=desc)
 
+
 def ensure_protected_bag(store, username, desc='', name=None):
     policy = _protected_policy(username)
-    if name == None:
+    if name is None:
         name = '%s-protected' % username
     return ensure_bag(name, store, policy, description=desc)
 
+
 def ensure_private_bag(store, username, desc='', name=None):
     policy = _private_policy(username)
-    if name == None:
+    if name is None:
         name = '%s-private' % username
     return ensure_bag(name, store, policy, description=desc)
 

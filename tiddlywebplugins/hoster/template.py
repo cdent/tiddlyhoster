@@ -9,7 +9,7 @@ from tiddlywebplugins.hoster.data import get_user_object
 
 
 def send_template(environ, template_name, template_data=None):
-    if template_data == None:
+    if template_data is None:
         template_data = {}
     template = get_template(environ, template_name)
     server_prefix = environ['tiddlyweb.config']['server_prefix']
@@ -23,22 +23,22 @@ def send_template(environ, template_name, template_data=None):
             'userpage': {
                 'link': '%s/home' % server_prefix,
                 'title': 'homepage',
-                },
+            },
             'login': {
                 'link': '%s/login' % server_prefix,
                 'title': 'Login',
-                },
+            },
             'help': {
                 'link': '%s/help' % server_prefix,
                 'title': 'Help',
-                },
+            },
             'register': {
                 'link': '%s/register' % server_prefix,
                 'title': 'Register',
-                },
+            },
             'server_prefix': server_prefix,
             'main_css': environ['tiddlyweb.config'].get(
                 'hoster.main_css', 'main.css'),
-            }
+    }
     template_defaults.update(template_data)
     return template.generate(template_defaults)
