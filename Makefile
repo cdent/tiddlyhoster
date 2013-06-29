@@ -22,7 +22,7 @@ test: contents
 dist: test contents
 	python setup.py sdist
 
-upload: clean pypi
+release: clean pypi
 
 pypi: test
 	python setup.py sdist upload
