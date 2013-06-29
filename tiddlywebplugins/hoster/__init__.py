@@ -2,7 +2,7 @@
 Host customizable TiddlyWikis on TiddlyWeb.
 """
 
-__version__ = '0.9.40'
+__version__ = '0.9.50'
 
 import time
 import urllib
