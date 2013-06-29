@@ -22,12 +22,14 @@ from tiddlyweb.store import (NoBagError, NoTiddlerError,
         NoUserError, NoRecipeError, StoreError)
 from tiddlyweb.web.util import (server_base_url, encode_name,
         bag_url, recipe_url, tiddler_url)
-from tiddlywebplugins.utils import replace_handler, do_html, require_role
+from tiddlywebplugins.utils import (replace_handler, do_html, require_role,
+        remove_handler)
 from tiddlyweb.wikitext import render_wikitext
-from tiddlywebplugins.hoster.instance import instance_tiddlers
+from tiddlyweb.util import merge_config
 from tiddlyweb.manage import make_command
 from tiddlyweb.web.sendtiddlers import send_tiddlers
 
+from tiddlywebplugins.hoster.config import config as hoster_config
 from tiddlywebplugins.hoster.template import send_template
 from tiddlywebplugins.hoster.data import (
         get_stuff, get_user_object, get_member_names, first_time_check,
@@ -44,16 +46,19 @@ def init(config):
     import tiddlywebplugins.wimporter
     import tiddlywebplugins.logout
     import tiddlywebplugins.form
+
+    merge_config(config, hoster_config)
+
     tiddlywebwiki.init(config)
     tiddlywebplugins.register.init(config)
     tiddlywebplugins.wimporter.init(config)
     tiddlywebplugins.logout.init(config)
     tiddlywebplugins.form.init(config)
-    
-    # XXX this clobbers?
-    config['instance_tiddlers'] = instance_tiddlers
+
+    merge_config(config, hoster_config)
 
     if 'selector' in config:
+        remove_handler(config['selector'], '/{recipe_name:segment}')
         replace_handler(config['selector'], '/', dict(GET=front))
         config['selector'].add('/help', GET=help_page)
         config['selector'].add('/login', GET=login)

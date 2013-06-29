@@ -14,7 +14,7 @@ clean: cleanlinks
 	rm -r tiddlywebplugins/hoster/resources || true
 
 contents:
-	./cacher
+	twibuilder tiddlywebplugins.hoster
 
 test: contents
 	py.test -x test

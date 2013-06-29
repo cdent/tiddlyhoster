@@ -32,7 +32,7 @@ setup(
             'tiddlywebwiki',
             'tiddlywebplugins.wimporter>=0.8',
             'tiddlywebplugins.register',
-            'tiddlywebplugins.instancer>=0.3.2',
+            'tiddlywebplugins.imaker',
             'tiddlywebplugins.openid2',
             'tiddlywebplugins.logout',
             'tiddlywebplugins.form',
