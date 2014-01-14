@@ -11,7 +11,7 @@ from tiddlyweb.serializations.html import Serialization as HTMLSerialization
 from tiddlyweb.model.policy import UserRequiredError, ForbiddenError
 from tiddlyweb.model.bag import Bag
 from tiddlyweb.model.recipe import Recipe
-from tiddlyweb.web.util import encode_name
+from tiddlyweb.web.util import encode_name, get_route_value
 
 from tiddlywebplugins.hoster.template import send_template
 from tiddlywebplugins.hoster.data import determine_publicity, get_user_object
@@ -54,13 +54,11 @@ class Serialization(HTMLSerialization):
             return HTMLSerialization.list_tiddlers(self, tiddlers)
 
         try:
-            name = self.environ['wsgiorg.routing_args'][1]['bag_name']
+            name = get_route_value(environ, 'bag_name')
             return self._bag_list(tiddlers)
         except KeyError:  # not a bag link
             try:
-                name = self.environ['wsgiorg.routing_args'][1]['recipe_name']
-                name = urllib.unquote(name)
-                name = unicode(name, 'utf-8')
+                name = get_route_value(environ, 'recipe_name')
                 return self._recipe_list(tiddlers, name)
             except KeyError:
                 return self._bag_list(tiddlers)
