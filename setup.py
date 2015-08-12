@@ -9,7 +9,7 @@ import os
 from setuptools import setup, find_packages
 
 # update in __init__ too please
-VERSION = '0.9.50'
+VERSION = '0.9.51'
 
 
 setup(

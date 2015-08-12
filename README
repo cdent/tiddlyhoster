@@ -1,6 +1,10 @@
 
 Hoster is a plugin for TiddlyWeb that hosts TiddlyWikis.
 
+**Do not use. Hoster is out of date, there are better
+and more interesting TiddlyWeb hosting solutions in Tank or
+TiddlySpace. This code is not maintained!**
+
 It aggregates a lot of functionality to explore how multi-user
 TiddlyWiki hosting might work. It is a prototype and is not 
 intended to be a complete system with an excellent UI. Instead
